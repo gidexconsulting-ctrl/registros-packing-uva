@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<title>Registros Packing Uva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F5F7FA;--surface:#FFFFFF;--surface2:#F8FAFC;--ink:#1F2937;--ink2:#374151;--muted:#6B7280;--line:#E5E9F0;--line2:#D6DCE5;
+  --pri:#2FA66A;--pri-d:#23865A;--pri-l:#E7F6EE;--acc:#8B6CD9;--acc-l:#F1ECFC;--grape:#8B6CD9;--grapebg:#F1ECFC;--green:#2FA66A;--greenbg:#E7F6EE;--green2:#5BC08A;
+  --warn:#C77A12;--warnbg:#FFF5E3;--bad:#D94848;--badbg:#FDEDED;--ok:#23865A;--okbg:#E7F6EE;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 4px 14px rgba(16,24,40,.05);--shadow2:0 10px 30px rgba(16,24,40,.10);
+  --r:16px;--ease:cubic-bezier(.2,.8,.2,1);--side:244px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+svg.lucide{width:20px;height:20px;stroke-width:2;flex:none}
+h1{font-size:26px;letter-spacing:-.02em;margin:0;line-height:1.2}
+h2{font-size:17px;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0}
+/* ---------- barra lateral (computadora) ---------- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;z-index:40}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px;cursor:pointer}
+.brand-mark{width:40px;height:40px;border-radius:12px;background:var(--acc-l);color:var(--acc);display:grid;place-items:center}
+.brand b{display:block;font-size:16px;letter-spacing:-.01em}
+.brand small{color:var(--muted);font-size:12px}
+.nav-l{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:10px 10px 6px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav button{display:flex;align-items:center;gap:11px;border:0;background:none;padding:10px 12px;border-radius:11px;font-weight:600;color:var(--ink2);cursor:pointer;text-align:left;transition:background .2s,color .2s}
+.nav button:hover{background:var(--surface2)}
+.nav button.on{background:var(--pri-l);color:var(--pri-d)}
+.nav button.on svg{color:var(--pri)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.sync-card{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface2)}
+.sync-card .st{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}
+.sync-card p{font-size:12.5px;color:var(--muted);margin:4px 0 10px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--pri);flex:none;animation:ping 2.2s infinite}
+.off .dot{background:var(--warn);animation:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(47,166,106,.45)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.user-card{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;cursor:pointer;border:0;background:none;text-align:left}
+.user-card:hover{background:var(--surface2)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--acc-l);color:var(--acc);display:grid;place-items:center;font-weight:800;flex:none;border:0;cursor:pointer}
+.user-card b{display:block;font-size:13.5px}.user-card small{color:var(--muted);font-size:12px}
+/* ---------- barra superior (celular) ---------- */
+.mtop{display:none;position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 16px;align-items:center;gap:10px}
+.mtop .brand{padding:0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.bnav-in{display:grid;grid-template-columns:repeat(4,1fr)}
+.bnav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--muted);padding:6px 0;border-radius:12px;cursor:pointer}
+.bnav button.on{color:var(--pri-d)}
+.bnav button.on svg{color:var(--pri);transform:translateY(-2px)}
+.bnav svg{transition:transform .25s var(--ease)}
+/* ---------- contenido ---------- */
+.app{margin-left:var(--side)}
+main{max-width:1180px;margin:0 auto;padding:28px 28px 120px}
+.view{display:none}
+.view.on{display:block;animation:viewIn .4s var(--ease)}
+@keyframes viewIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+::view-transition-old(root){animation:fadeOut .16s ease both}
+::view-transition-new(root){animation:fadeIn .26s var(--ease) both}
+@keyframes fadeOut{to{opacity:0}}@keyframes fadeIn{from{opacity:0}}
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.page-h .sub{margin-top:6px}
+.ph-act{display:flex;gap:8px;flex-wrap:wrap}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
+.card-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.card-h .sub{font-size:13px}
+.stack{display:flex;flex-direction:column;gap:18px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cols2>*{min-width:0}
+/* indicadores */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;animation:cardIn .5s var(--ease) both}
+.kpi .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;flex:none}
+.kpi .lab{font-size:13px;color:var(--muted);font-weight:600}
+.kpi .val{font-size:25px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi .unit{font-size:13px;color:var(--muted);font-weight:600;margin-left:3px}
+.minis{display:flex;gap:10px;flex-wrap:wrap}
+.mini{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;font-size:13.5px;font-weight:600;color:var(--ink2);cursor:pointer;transition:transform .15s var(--ease)}
+.mini:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.mini b{font-size:14px}
+.mini .mi{width:26px;height:26px;border-radius:50%;display:grid;place-items:center}
+.mini .mi svg{width:15px;height:15px}
+/* proceso */
+.proc{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;position:relative}
+.proc::before{content:"";position:absolute;left:6%;right:6%;top:27px;height:3px;background:var(--line);border-radius:3px}
+.pstep{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;cursor:pointer;padding:0 2px 6px;border-radius:14px;border:0;background:none}
+.pstep .node{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s;position:relative}
+.pstep:hover .node{transform:translateY(-4px) scale(1.05);box-shadow:0 8px 20px rgba(16,24,40,.12)}
+.pstep .num{position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font-size:11px;font-weight:800;display:grid;place-items:center;color:var(--ink2)}
+.pstep .nm{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.2}
+.pstep .ct{font-size:12px;color:var(--muted)}
+.pstep.done .num{background:var(--pri);color:#fff;border-color:var(--pri)}
+/* listas */
+.list{display:flex;flex-direction:column;gap:8px}
+.li{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);font-size:14px;transition:background .2s,transform .15s}
+.li.click{cursor:pointer}.li.click:hover{background:var(--surface);transform:translateX(3px)}
+.li .lic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+.li .lic svg{width:18px;height:18px}
+.li small{color:var(--muted)}
+.li .grow{flex:1;min-width:0}
+.empty{display:flex;flex-direction:column;align-items:center;color:var(--muted);text-align:center;padding:10px;font-size:14px}
+.empty .lot{width:100px;height:100px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:180px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bar i{display:block;width:100%;max-width:30px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#7FD3A6,var(--pri));transform-origin:bottom;animation:grow .8s var(--ease) both}
+.bar i.zero{background:var(--line)}
+.bar small{font-size:11px;color:var(--muted)}
+.bar em{font-style:normal;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:14px}
+@keyframes grow{from{transform:scaleY(0)}}
+/* ---------- registros ---------- */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;color:var(--muted)}
+.search input{border:0;background:none;outline:0;padding:11px 0;width:100%;color:var(--ink)}
+.search:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px var(--pri-l)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.fchip{flex:none;border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink2);transition:all .2s;display:flex;align-items:center;gap:6px}
+.fchip i.d{width:8px;height:8px;border-radius:50%}
+.fchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sec{margin-top:26px;animation:cardIn .45s var(--ease) both}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sec-h .sn{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:14px}
+.sec-h .sub{font-size:13px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.reg{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .22s,border-color .22s;text-align:left;width:100%}
+.reg:hover{transform:translateY(-3px);box-shadow:var(--shadow2);border-color:var(--line2)}
+.reg:active{transform:scale(.98)}
+.reg .ric{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;flex:none}
+.reg .grow{flex:1;min-width:0}
+.reg h3{margin:1px 0 3px;font-size:15px;line-height:1.25}
+.code{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.reg .meta{font-size:12.5px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.reg .go{color:var(--muted);transition:transform .2s}
+.reg:hover .go{transform:translateX(3px);color:var(--ink)}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.ok{background:var(--okbg);color:var(--ok);border-color:transparent}
+.tag.warn{background:var(--warnbg);color:var(--warn);border-color:transparent}
+.tag.bad{background:var(--badbg);color:var(--bad);border-color:transparent}
+.tag.gr{background:var(--acc-l);color:var(--acc);border-color:transparent}
+/* ---------- botones ---------- */
+.btn{border:1px solid var(--line2);background:var(--surface);padding:10px 16px;border-radius:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;min-height:44px;transition:transform .15s var(--ease),background .2s,box-shadow .2s,border-color .2s;position:relative;overflow:hidden;color:var(--ink2)}
+.btn:hover{background:var(--surface2);border-color:var(--muted)}
+.btn:active{transform:scale(.96)}
+.btn.pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn.pri:hover{background:var(--pri-d);box-shadow:0 8px 20px rgba(47,166,106,.28)}
+.btn.soft{background:var(--acc-l);color:#6A4CC0;border-color:transparent}
+.btn.soft:hover{background:#E6DDFA}
+.btn.danger{color:var(--bad)}
+.btn.live{background:var(--badbg);color:var(--bad);border-color:var(--bad)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn .rip{position:absolute;border-radius:50%;background:currentColor;opacity:.2;transform:scale(0);animation:rip .55s ease-out;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.icon-btn{border:1px solid var(--line);background:var(--surface);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:transform .15s,background .2s;flex:none}
+.icon-btn:hover{background:var(--surface2)}
+/* ---------- formulario guiado ---------- */
+.fhead{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.fhead .ric{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none}
+.fhead .grow{flex:1;min-width:0}
+.fhead h1{font-size:22px}
+.ring{width:58px;height:58px;position:relative;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--pri);stroke-linecap:round;transition:stroke-dashoffset .5s var(--ease)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:12.5px}
+.quick{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:16px}
+.quick>span{font-size:13px;font-weight:700;color:var(--muted);margin-right:4px}
+.quick .btn{min-height:40px;padding:8px 13px;font-size:14px}
+.wiz{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.wstep{flex:1;min-width:150px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;transition:all .25s var(--ease)}
+.wstep .wn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);flex:none;transition:all .25s}
+.wstep .wn svg{width:16px;height:16px}
+.wstep b{display:block;font-size:13.5px;color:var(--ink2)}
+.wstep small{font-size:12px;color:var(--muted)}
+.wstep.on{border-color:var(--pri);box-shadow:0 0 0 4px var(--pri-l)}
+.wstep.on .wn{background:var(--pri);border-color:var(--pri);color:#fff}
+.wstep.done .wn{background:var(--pri-l);color:var(--pri-d);border-color:transparent}
+.wstep.alert .wn{background:var(--warnbg);color:var(--warn);border-color:transparent}
+.panel{display:none}
+.panel.on{display:block;animation:panelIn .38s var(--ease)}
+.panel.on.back{animation-name:panelBack}
+@keyframes panelIn{from{opacity:0;transform:translateX(24px)}}
+@keyframes panelBack{from{opacity:0;transform:translateX(-24px)}}
+.ptitle{display:flex;align-items:center;gap:10px;margin:0 0 4px}
+.phelp{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.field{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 12px 7px;transition:border-color .2s,box-shadow .2s,background .3s;position:relative}
+.field.wide{grid-column:1/-1}
+.field:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px var(--pri-l)}
+.field label{display:flex;gap:6px;align-items:center;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.req{color:var(--bad)}
+.ctl{display:flex;gap:6px;align-items:center}
+.ctl input,.ctl select,.ctl textarea{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:10px 12px;min-height:46px;font-size:16px;outline:0;transition:border-color .2s,background .2s}
+.ctl textarea{resize:vertical;min-height:70px}
+.ctl input:focus,.ctl select:focus,.ctl textarea:focus{border-color:var(--pri);background:var(--surface)}
+.ctl output{flex:1;display:flex;align-items:center;min-height:46px;padding:0 12px;border-radius:10px;background:var(--pri-l);color:var(--pri-d);font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
+.mic{border:0;width:42px;height:42px;border-radius:10px;background:var(--acc-l);color:var(--acc);display:grid;place-items:center;cursor:pointer;flex:none;transition:transform .15s,background .2s}
+.mic:hover{background:#E6DDFA}
+.mic:active{transform:scale(.9)}
+.mic.live{background:var(--bad);color:#fff;animation:micp 1s infinite}
+@keyframes micp{50%{box-shadow:0 0 0 6px rgba(217,72,72,.2)}}
+.seg{flex:1;display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:56px;min-height:46px;border:1px solid var(--line);background:var(--surface2);border-radius:10px;font-weight:700;cursor:pointer;transition:all .2s var(--ease);font-size:14px;color:var(--ink2)}
+.seg button:hover{border-color:var(--line2);background:var(--surface)}
+.seg button.on{background:var(--pri);border-color:var(--pri);color:#fff;transform:scale(1.02)}
+.seg button.on.badopt{background:var(--bad);border-color:var(--bad)}
+.hint{font-size:12px;min-height:16px;margin-top:4px;color:var(--muted)}
+.field.warn{border-color:#F0C27A;background:linear-gradient(0deg,var(--warnbg),var(--surface) 70%)}
+.field.warn .hint{color:var(--warn);font-weight:600}
+.field.bad{border-color:#F2A3A3;background:linear-gradient(0deg,var(--badbg),var(--surface) 70%)}
+.field.bad .hint{color:var(--bad);font-weight:600}
+.field.filled::after{content:"";position:absolute;inset:-1px;border-radius:14px;border:2px solid var(--acc);animation:flash 1.1s ease-out forwards;pointer-events:none}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+.src{font-size:10px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--acc-l);color:var(--acc);text-transform:uppercase;letter-spacing:.04em}
+.src.auto{background:var(--pri-l);color:var(--pri-d)}
+.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.evid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.evid>*{min-width:0}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.thumb{position:relative;width:84px;height:84px;border-radius:12px;overflow:hidden;border:1px solid var(--line);animation:cardIn .35s var(--ease)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;display:grid;place-items:center}
+.thumb button svg{width:14px;height:14px}
+.sig{width:100%;height:150px;border:1.5px dashed var(--line2);border-radius:12px;background:var(--surface2);touch-action:none;cursor:crosshair;display:block}
+.review-al{border-radius:14px;padding:14px;margin-bottom:14px}
+.review-al.ok{background:var(--okbg);color:var(--ok)}
+.review-al.warn{background:var(--warnbg);color:var(--warn)}
+.rv{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.rv .card{padding:14px}
+.rv h3{font-size:14px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.rrow{display:flex;justify-content:space-between;gap:10px;padding:7px 8px;border-radius:8px;font-size:13.5px;cursor:pointer}
+.rrow:hover{background:var(--surface2)}
+.rrow span{color:var(--muted)}
+.rrow b{text-align:right}
+.rrow.miss b{color:var(--bad)}
+.rrow.w b{color:var(--warn)}.rrow.x b{color:var(--bad)}
+.wfoot{position:sticky;bottom:0;z-index:20;margin-top:20px;padding:12px 0 calc(12px + env(safe-area-inset-bottom));background:linear-gradient(0deg,var(--bg) 75%,rgba(245,247,250,0));display:flex;gap:10px;align-items:center}
+.wfoot .btn{min-height:50px;padding:12px 20px}
+.wfoot .info{flex:1;text-align:center;font-size:13px;color:var(--muted);font-weight:600}
+.toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink2)}
+.toggle input{appearance:none;width:44px;height:26px;border-radius:999px;background:var(--line2);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked{background:var(--pri)}
+.toggle input:checked::after{transform:translateX(18px)}
+/* ---------- historial y ajustes ---------- */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{background:var(--surface2);text-align:left;font-size:12px;color:var(--muted);font-weight:700;padding:11px 12px;white-space:nowrap;position:sticky;top:0}
+td{padding:10px 12px;border-top:1px solid var(--line);white-space:nowrap}
+tbody tr{animation:fadeIn .3s}
+tbody tr:hover{background:var(--surface2)}
+.acts{display:flex;gap:4px}
+.acts button{border:0;background:none;padding:6px;border-radius:8px;cursor:pointer;color:var(--muted)}
+.acts button:hover{background:var(--line);color:var(--ink)}
+.acts svg{width:17px;height:17px}
+select.plain,input.plain{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:44px}
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.set-grid>*{min-width:0}
+.fld{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.fld span{font-size:13px;font-weight:600;color:var(--ink2)}
+.fld input,.fld select{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:10px 12px;min-height:44px;outline:0}
+.fld input:focus{border-color:var(--pri)}
+ol.guide{padding-left:20px;margin:0;font-size:14px}
+ol.guide li{margin-bottom:7px}
+code{background:var(--surface2);border:1px solid var(--line);padding:1px 5px;border-radius:6px;font-size:12.5px}
+.bp{font-size:14px;margin:0;padding-left:18px}
+.bp li{margin-bottom:8px}
+.bp b{color:var(--pri-d)}
+/* ---------- capas ---------- */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(31,41,55,.35);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:16px}
+.scrim.on{display:flex;animation:fadeIn .2s}
+.modal{background:var(--surface);border-radius:20px;max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 30px 80px rgba(16,24,40,.25);animation:pop .35s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.96)}}
+.modal h2{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.ocr-text{white-space:pre-wrap;font-size:13px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px;max-height:150px;overflow:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.vchip{border:1px solid #CDBDF2;color:#6A4CC0;background:var(--acc-l);border-radius:999px;padding:6px 11px;font-weight:700;font-size:13px;cursor:pointer;transition:transform .15s}
+.vchip:active{transform:scale(.92)}
+.vchip.used{opacity:.4;text-decoration:line-through}
+.prog{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--pri));width:0;transition:width .3s}
+.section-t{display:flex;align-items:center;gap:8px;font-weight:800;margin:16px 0 10px;font-size:15px}
+.hud{position:fixed;left:calc(50% + var(--side)/2);bottom:96px;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;z-index:70;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 10px 8px 8px;display:flex;align-items:center;gap:10px;max-width:min(92vw,640px);box-shadow:0 18px 50px rgba(16,24,40,.18);transition:all .35s var(--ease)}
+.hud.on{opacity:1;transform:translateX(-50%);pointer-events:auto}
+.hud .lot{width:46px;height:46px;flex:none}
+.hud .tx{font-size:14px;line-height:1.3;font-weight:600}
+.hud .tx small{display:block;color:var(--muted);font-size:12px;font-weight:500}
+.hud button{border:0;background:var(--badbg);color:var(--bad);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:700;flex:none}
+.toasts{position:fixed;top:18px;right:18px;z-index:90;display:flex;flex-direction:column;gap:8px;max-width:min(92vw,380px)}
+.toast{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--pri);border-radius:12px;padding:11px 14px;box-shadow:var(--shadow2);font-size:14px;display:flex;gap:10px;align-items:flex-start;animation:tin .4s var(--ease)}
+.toast.warn{border-left-color:var(--warn)}.toast.bad{border-left-color:var(--bad)}.toast.info{border-left-color:var(--acc)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateX(30px)}}
+@keyframes tout{to{opacity:0;transform:translateX(30px)}}
+.success{position:fixed;inset:0;z-index:95;display:none;place-items:center;background:rgba(245,247,250,.75);backdrop-filter:blur(4px)}
+.success.on{display:grid;animation:fadeIn .2s}
+.success .box{display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800;font-size:18px;text-align:center;background:var(--surface);padding:22px 34px 26px;border-radius:24px;box-shadow:var(--shadow2)}
+.success .lot{width:140px;height:140px}
+.success small{font-weight:500;color:var(--muted);font-size:14px}
+video.scan{width:100%;border-radius:14px;background:#000;max-height:50vh;object-fit:cover}
+.kbd{font-size:11px;border:1px solid rgba(255,255,255,.45);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.proc{grid-template-columns:repeat(4,1fr);row-gap:18px}.proc::before{display:none}}
+@media (max-width:860px){
+  .side{display:none}.app{margin-left:0}.mtop{display:flex}.bnav{display:block}
+  main{padding:18px 16px 140px}
+  .cols2,.set-grid,.evid{grid-template-columns:1fr}
+  .hud{left:50%;bottom:150px}
+  .wfoot{bottom:62px}
+  h1{font-size:22px}
+  .toasts{top:70px;right:12px}
+  .wstep{min-width:auto;flex:none}.wstep .wt{display:none}.wstep.on .wt{display:block}
+  .fhead h1{font-size:19px}
+  .wfoot .info{display:none}
+  .wfoot{flex-wrap:wrap}.wfoot .btn{flex:1;padding:12px 10px}
+  .quick>span{display:none}.quick{padding:8px}.quick .btn{flex:1 1 auto}
+  .kpi{padding:12px}.kpi .ic{width:40px;height:40px}.kpi .val{font-size:21px}
+}
+@media (max-width:420px){.proc{grid-template-columns:repeat(4,1fr)}.pstep .node{width:48px;height:48px}.pstep .nm{font-size:11px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<aside class="side" aria-label="Menú">
+  <div class="brand" data-go="home"><div class="brand-mark"><i data-lucide="grape"></i></div><div><b>Packing Uva</b><small>Registros de calidad</small></div></div>
+  <div class="nav-l">Menú</div>
+  <nav class="nav">
+    <button class="on" data-go="home"><i data-lucide="layout-dashboard"></i>Inicio</button>
+    <button data-go="regs"><i data-lucide="clipboard-list"></i>Registros</button>
+    <button data-go="hist"><i data-lucide="history"></i>Historial</button>
+    <button data-go="set"><i data-lucide="settings"></i>Ajustes</button>
+  </nav>
+  <div class="side-foot">
+    <div class="sync-card" id="syncCard"><div class="st"><span class="dot"></span><span id="syncTxt">En línea</span></div><p id="syncSub">Todo sincronizado</p><button class="btn" id="syncChip" style="width:100%;min-height:38px"><i data-lucide="cloud-upload"></i>Sincronizar</button></div>
+    <button class="user-card" data-go="set"><span class="avatar" id="avatar">?</span><span><b id="uName">Usuario</b><small id="uRole"></small></span></button>
+  </div>
+</aside>
+
+<div class="app">
+<header class="mtop">
+  <div class="brand" data-go="home"><div class="brand-mark" style="width:34px;height:34px"><i data-lucide="grape"></i></div><b>Packing Uva</b></div>
+  <span style="flex:1"></span>
+  <button class="chip" id="mSync"><span class="dot"></span><span id="pendN">0</span></button>
+  <button class="avatar" id="avatarM" data-go="set">?</button>
+</header>
+
+<main>
+<!-- INICIO -->
+<section class="view on" id="v-home">
+  <div class="page-h"><div><h1 id="hello">Buenos días</h1><p class="sub" id="today"></p></div>
+    <div class="ph-act"><button class="btn" data-go="hist"><i data-lucide="history"></i>Ver historial</button><button class="btn pri" data-go="regs"><i data-lucide="plus"></i>Nuevo registro</button></div></div>
+  <div class="stack">
+    <div class="kpis" id="kpis"></div>
+    <div class="minis" id="minis"></div>
+    <section class="card"><div class="card-h"><h2>Proceso de hoy</h2><span class="sub">Toque una etapa para registrar</span></div><div class="proc" id="proc"></div></section>
+    <div class="cols2">
+      <section class="card"><div class="card-h"><h2>Pendientes de hoy</h2><span class="sub">Registros diarios</span></div><div class="list" id="pending"></div></section>
+      <section class="card"><div class="card-h"><h2>Alertas recientes</h2><span class="sub">Fuera de rango o NC</span></div><div class="list" id="alerts"></div></section>
+    </div>
+    <section class="card"><div class="card-h"><h2>Kg netos recibidos</h2><span class="sub">Últimos 14 días (R-01)</span></div><div class="bars" id="bars"></div></section>
+  </div>
+</section>
+
+<!-- REGISTROS -->
+<section class="view" id="v-regs">
+  <div class="page-h"><div><h1>Registros</h1><p class="sub">Ordenados según el flujo del packing, de la recepción al embarque.</p></div></div>
+  <div class="stack" style="gap:12px">
+    <div class="toolbar"><label class="search"><i data-lucide="search"></i><input id="q" placeholder="Buscar: prefrío, cloro, contenedor, R11…" autocomplete="off"></label></div>
+    <div class="filters" id="stageF"></div>
+  </div>
+  <div id="regList"></div>
+</section>
+
+<!-- FORMULARIO -->
+<section class="view" id="v-form">
+  <div class="fhead">
+    <button class="icon-btn" data-go="regs" aria-label="Volver"><i data-lucide="arrow-left"></i></button>
+    <div class="ric" id="fIc"></div>
+    <div class="grow"><div class="code" id="fCode"></div><h1 id="fTitle"></h1></div>
+    <div class="ring" title="Avance del registro"><svg width="58" height="58"><circle class="bg" cx="29" cy="29" r="24"/><circle class="fg" id="ringFg" cx="29" cy="29" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg><b id="ringTx">0%</b></div>
+  </div>
+  <div class="quick">
+    <span>Llenar más rápido:</span>
+    <button class="btn soft" id="tVoice"><i data-lucide="mic"></i>Dictar</button>
+    <button class="btn" id="tPhoto"><i data-lucide="camera"></i>Foto del formato</button>
+    <button class="btn" id="tScan"><i data-lucide="scan-barcode"></i>Escanear</button>
+    <button class="btn" id="tRepeat"><i data-lucide="copy"></i>Repetir último</button>
+    <button class="btn" id="tClear"><i data-lucide="eraser"></i>Limpiar</button>
+  </div>
+  <div class="wiz" id="wiz"></div>
+  <form id="form" autocomplete="off" onsubmit="return false"><div id="panels"></div></form>
+  <div class="wfoot">
+    <button class="btn" id="prevB"><i data-lucide="arrow-left"></i>Anterior</button>
+    <div class="info" id="stepInfo"></div>
+    <button class="btn" id="saveNew"><i data-lucide="copy-plus"></i>Guardar y nuevo</button>
+    <button class="btn pri" id="nextB">Siguiente<i data-lucide="arrow-right"></i></button>
+    <button class="btn pri" id="save"><i data-lucide="save"></i>Guardar registro</button>
+  </div>
+</section>
+
+<!-- HISTORIAL -->
+<section class="view" id="v-hist">
+  <div class="page-h"><div><h1>Historial</h1><p class="sub">Registros guardados en este equipo. Los sincronizados también están en Google Sheets.</p></div>
+    <div class="ph-act"><button class="btn" id="expC"><i data-lucide="download"></i>CSV</button><button class="btn" id="expX"><i data-lucide="file-spreadsheet"></i>Excel</button><button class="btn pri" id="syncNow"><i data-lucide="cloud-upload"></i>Sincronizar</button></div></div>
+  <div class="card" style="padding:14px;margin-bottom:16px"><div class="toolbar">
+    <select class="plain" id="hReg" style="flex:1;min-width:240px"></select>
+    <input class="plain" type="month" id="hMonth">
+    <label class="search"><i data-lucide="search"></i><input id="hq" placeholder="Buscar lote, pallet, contenedor…"></label>
+  </div></div>
+  <div id="hBody"></div>
+</section>
+
+<!-- AJUSTES -->
+<section class="view" id="v-set">
+  <div class="page-h"><div><h1>Ajustes</h1><p class="sub">Usuario, conexión con Google Sheets y preferencias.</p></div><div class="ph-act"><button class="btn pri" id="sSave"><i data-lucide="save"></i>Guardar ajustes</button></div></div>
+  <div class="set-grid">
+    <div class="stack">
+      <div class="card">
+        <div class="card-h"><h2>1. Usuario</h2></div>
+        <label class="fld"><span>Nombre completo</span><input id="sUser"></label>
+        <label class="fld"><span>Cargo</span><select id="sRole"></select></label>
+        <label class="fld" style="margin:0"><span>Empresa</span><input id="sComp" placeholder="Nombre de la empresa"></label>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>3. Preferencias</h2></div>
+        <div class="list" style="gap:12px">
+          <label class="toggle"><input type="checkbox" id="sAuto">Sincronizar automáticamente</label>
+          <label class="toggle"><input type="checkbox" id="sVib">Vibrar al guardar o con alertas</label>
+          <label class="toggle"><input type="checkbox" id="sSpeak">Leer en voz alta las alertas</label>
+          <label class="toggle"><input type="checkbox" id="sGeo">Registrar ubicación GPS por defecto</label>
+        </div>
+        <label class="fld" style="margin:14px 0 0"><span>Idioma del dictado</span><select id="sLang"><option value="es-PE">Español (Perú)</option><option value="es-419">Español (Latinoamérica)</option><option value="es-ES">Español (España)</option><option value="es-MX">Español (México)</option><option value="es-CL">Español (Chile)</option></select></label>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <div class="card-h"><h2>2. Conexión con Google Sheets</h2></div>
+        <label class="fld"><span>URL de la aplicación web de Apps Script (termina en /exec)</span><input id="sUrl" placeholder="https://script.google.com/macros/s/…/exec"></label>
+        <button class="btn pri" id="sTest"><i data-lucide="plug-zap"></i>Probar conexión</button>
+        <div class="section-t" style="margin-top:18px">Cómo conectar</div>
+        <ol class="guide">
+          <li>Cree una hoja de cálculo en Google Drive.</li>
+          <li>Abra <b>Extensiones › Apps Script</b> y pegue el archivo <code>Codigo_AppsScript.gs</code> de esta carpeta.</li>
+          <li><b>Implementar › Nueva implementación › Aplicación web</b>. Ejecutar como: <i>Yo</i>. Acceso: <i>Cualquier persona</i>.</li>
+          <li>Copie la URL <code>/exec</code>, péguela arriba y pulse <b>Probar conexión</b>.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>4. Datos de este equipo</h2></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="bk"><i data-lucide="hard-drive-download"></i>Copia de seguridad</button>
+          <button class="btn" id="rs"><i data-lucide="hard-drive-upload"></i>Restaurar</button>
+          <input type="file" id="rsIn" accept=".json" hidden>
+          <button class="btn danger" id="wipe"><i data-lucide="trash-2"></i>Borrar datos locales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="card-h"><h2>Buenas prácticas aplicadas en esta app</h2></div>
+    <ul class="bp">
+      <li><b>Integridad de datos (ALCOA+).</b> Cada registro queda atribuido a un usuario, con fecha y hora automáticas, origen del dato (manual, voz, foto, escáner), firma y versión. Corregir exige un motivo y queda en la hoja «Auditoría»; los registros no se borran, se anulan.</li>
+      <li><b>Opciones fijas en vez de texto libre.</b> C/NC, Sí/No y dictámenes como botones grandes, para que los datos se puedan analizar.</li>
+      <li><b>Llenado guiado por pasos.</b> Datos generales → mediciones → verificaciones → cierre → revisión, con avance visible y validación al terminar cada campo.</li>
+      <li><b>Pensado para la planta.</b> Botones grandes para manos con guantes, dictado por voz, cálculos automáticos y «Repetir último».</li>
+      <li><b>Funciona sin señal</b> en cámaras de frío y contenedores: guarda en el equipo y envía cuando vuelve la conexión.</li>
+      <li><b>Del papel a lo digital.</b> La foto de un formato se lee con OCR y usted confirma los valores. Se recomienda usar papel y app en paralelo una o dos semanas.</li>
+      <li><b>No conformidad → acción correctiva.</b> Ante un NC o un valor fuera de rango, la app propone abrir el R-21 ya prellenado.</li>
+    </ul>
+  </div>
+</section>
+</main>
+</div>
+
+<nav class="bnav" aria-label="Secciones"><div class="bnav-in">
+  <button class="on" data-go="home"><i data-lucide="layout-dashboard"></i>Inicio</button>
+  <button data-go="regs"><i data-lucide="clipboard-list"></i>Registros</button>
+  <button data-go="hist"><i data-lucide="history"></i>Historial</button>
+  <button data-go="set"><i data-lucide="settings"></i>Ajustes</button>
+</div></nav>
+
+<div class="hud" id="hud" role="status" aria-live="polite"><div class="lot" id="hudLot"></div><div class="tx"><span id="hudTx">Escuchando…</span><small id="hudHelp">Diga el nombre del campo y el valor.</small></div><button id="hudStop">Parar</button></div>
+<div class="scrim" id="scrim"><div class="modal" id="modal"></div></div>
+<div class="success" id="success"><div class="box"><div class="lot" id="sucLot"></div><span id="sucTx">Registro guardado</span><small id="sucSub"></small></div></div>
+<div class="toasts" id="toasts"></div>
+<button id="themeBtn" hidden></button>
+<script>
+/* ======================= utilidades ======================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s??'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9.,:\-\s/]/g,' ').replace(/\s+/g,' ').trim();
+const pad=n=>String(n).padStart(2,'0');
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const nowHM=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)).slice(0,18);
+const num=x=>(x===''||x==null||isNaN(Number(x)))?null:Number(x);
+const fmtN=(x,d=1)=>x==null||x===''?'—':Number(x).toLocaleString('es-PE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtD=iso=>iso&&/^\d{4}-\d{2}-\d{2}/.test(iso)?iso.slice(8,10)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4):(iso||'');
+const icons=()=>{try{window.lucide&&lucide.createIcons()}catch(e){}};
+const store={get(k,d){try{const v=localStorage.getItem('uva_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('uva_'+k,JSON.stringify(v))}catch(e){}}};
+const vib=p=>{if(S.vib&&navigator.vibrate)try{navigator.vibrate(p)}catch(e){}};
+const hm2m=t=>{if(!/^\d{1,2}:\d{2}/.test(t||''))return null;const[h,m]=t.split(':').map(Number);return h*60+m};
+const minDiff=(a,b)=>{const x=hm2m(a),y=hm2m(b);return x==null||y==null?'':((y-x)+1440)%1440};
+const sub=(a,b)=>num(a)==null||num(b)==null?'':+(num(a)-num(b)).toFixed(3);
+const div=(a,b)=>num(a)==null||!num(b)?'':+(num(a)/num(b)).toFixed(4);
+const sum=(...a)=>a.some(x=>num(x)!=null)?+a.reduce((s,x)=>s+(num(x)||0),0).toFixed(3):'';
+const avg=(...a)=>{const v=a.map(num).filter(x=>x!=null);return v.length?+(v.reduce((s,x)=>s+x,0)/v.length).toFixed(2):''};
+
+/* ======================= esquema de registros ======================= */
+const CN=['C','NC'], SN=['Sí','No'];
+const VAR=['Sweet Globe','Red Globe','Autumn Crisp','Allison','Timpson','Sweet Celebration','Crimson Seedless','Thompson Seedless','Superior Seedless','Jack\'s Salute','Ivory','Cotton Candy','Candy Snaps','Arra 15'];
+const PRES=['Caja 8,2 kg bolsa perforada','Caja 8,2 kg granel','Caja 10 clamshells x 500 g','Caja 5 kg','Caja 4,5 kg','Caja 9 kg'];
+const CAL=['Jumbo','XL','L','M','S'];
+const MAT=['Caja de cartón 8,2 kg','Bolsa perforada','Clamshell 500 g','Generador SO₂ (doble fase)','Lámina de SO₂','Etiqueta de caja','Etiqueta de pallet','Esquinero','Zuncho','Pallet de madera','Papel sulfito'];
+const F=(key,label,type,o={})=>Object.assign({key,label,type},o);
+const fecha=()=>F('fecha','Fecha','date',{req:1,def:'today'}), hora=(l='Hora')=>F('hora',l,'time',{def:'now'}), obs=()=>F('obs','Observaciones','area');
+const user=(k='resp',l='Responsable')=>F(k,l,'text',{def:'user'});
+const REGS=[
+{code:'R-01',sheet:'R01 Recepción MP',name:'Recepción de materia prima',stage:'Recepción',icon:'truck',col:'#4E7A3A',freq:'Por cada lote o camión',obj:'Registrar el ingreso de cada lote de uva al packing: origen, pesos, jabas y temperatura de pulpa, para asegurar la trazabilidad desde el campo.',
+ fields:[fecha(),hora('Hora llegada'),F('guia','N.° guía de remisión','text',{req:1}),F('prod','Productor / fundo','text',{req:1,learn:1}),F('ggn','Código lugar de producción (GGN/CLP)','text',{learn:1}),F('var','Variedad','text',{req:1,dl:VAR}),F('lote','Lote / parcela','text',{req:1}),F('placa','Placa vehículo','text',{learn:1}),
+ F('jabas','N.° jabas','int',{req:1,min:1}),F('pb','Peso bruto (kg)','dec',{req:1,min:0}),F('tara','Tara (kg)','dec',{min:0}),F('pn','Peso neto (kg)','calc',{fn:v=>sub(v.pb,v.tara||0),d:1,min:0,msg:'Peso neto negativo: revise bruto y tara'}),F('prom','Peso prom. por jaba (kg)','calc',{fn:v=>div(v.pn,v.jabas),d:2}),
+ F('tp','T° pulpa (°C)','dec',{max:30,msg:'Pulpa > 30 °C: priorizar el ingreso a frío'}),F('hc','Hora término cosecha','time'),F('veh','Vehículo limpio y cubierto (C/NC)','sel',{opts:CN,bad:['NC']}),obs(),user('resp','Recibido por (firma)')]},
+{code:'R-02',sheet:'R02 Calidad recepción',name:'Calidad de materia prima en recepción',stage:'Recepción',icon:'microscope',col:'#4E7A3A',freq:'Por cada lote',obj:'Evaluar la madurez y los defectos de la fruta recibida y decidir si el lote se acepta para exportación.',
+ fields:[fecha(),F('lote','Lote','text',{req:1}),F('var','Variedad','text',{dl:VAR}),F('prod','Productor / fundo','text',{learn:1}),F('nmu','N.° racimos muestreados','int'),F('brix','Sólidos solubles (°Brix)','dec',{min:16,msg:'°Brix bajo el mínimo referencial (16): verificar madurez'}),F('acid','Acidez titulable (%)','dec'),
+ F('ratio','Relación Brix/acidez','calc',{fn:v=>div(v.brix,v.acid),d:1}),F('cal','Calibre promedio (mm)','dec'),F('color','Color (escala)','text',{learn:1}),F('pud','Pudrición (%)','dec',{max:1,msg:'Pudrición > 1 %: evaluar rechazo del lote'}),F('part','Partidura (%)','dec'),F('desh','Deshidratación de raquis (%)','dec'),F('sue','Bayas sueltas (%)','dec'),F('ins','Daño por insectos (%)','dec'),
+ F('tot','Total defectos (%)','calc',{fn:v=>sum(v.pud,v.part,v.desh,v.sue,v.ins),d:1,max:5,msg:'Defectos totales > 5 % (tolerancia referencial)'}),F('dict','Dictamen','sel',{opts:['Aceptado','Aceptado con observación','Rechazado'],bad:['Rechazado'],req:1}),user('insp','Inspector'),obs()]},
+{code:'R-03',sheet:'R03 Fumigación SO2',name:'Fumigación con SO₂',stage:'Fumigación',icon:'wind',col:'#6E5A9E',freq:'Por carga de cámara',obj:'Controlar la dosis, el tiempo de exposición y la ventilación de cada fumigación con SO₂.',
+ fields:[fecha(),F('cam','N.° cámara','text',{req:1,learn:1}),F('lotes','Lotes fumigados','text',{req:1}),F('jabas','N.° jabas','int'),F('vol','Volumen de cámara (m³)','dec',{learn:1}),F('dosis','Dosis (ppm)','int'),F('kg','SO₂ aplicado (kg)','dec'),F('hi','Hora inicio','time'),F('hf','Hora fin','time'),
+ F('texp','Tiempo de exposición (min)','calc',{fn:v=>minDiff(v.hi,v.hf),d:0}),F('conc','Concentración medida (ppm)','int'),F('hv','Hora de ventilación','time'),user('op','Operador'),F('epp','EPP completo (Sí/No)','sel',{opts:SN,bad:['No']}),obs()]},
+{code:'R-04',sheet:'R04 Cámara espera',name:'Temperatura en cámara de espera',stage:'Espera',icon:'thermometer',col:'#2F7D8C',freq:'Cada 2 horas',daily:1,obj:'Vigilar la temperatura y la humedad de la fruta en espera de proceso.',
+ fields:[fecha(),hora(),F('cam','N.° cámara','text',{req:1,learn:1}),F('tamb','T° ambiente (°C)','dec',{max:6}),F('hr','Humedad relativa (%)','int',{min:85}),F('t1','T° pulpa muestra 1 (°C)','dec'),F('t2','T° pulpa muestra 2 (°C)','dec'),F('t3','T° pulpa muestra 3 (°C)','dec'),
+ F('tprom','T° pulpa promedio (°C)','calc',{fn:v=>avg(v.t1,v.t2,v.t3),d:1,max:12,msg:'Pulpa promedio > 12 °C en espera'}),F('lotes','Lotes almacenados','text'),user(),obs()]},
+{code:'R-05',sheet:'R05 Línea embalaje',name:'Control en línea de selección y embalaje',stage:'Embalaje',icon:'package-check',col:'#B5651D',freq:'Cada hora por línea',obj:'Verificar peso de cajas, racimos, calibre, generador de SO₂ y rotulado durante el embalaje.',
+ fields:[fecha(),hora(),F('linea','Línea / mesa','text',{req:1,learn:1}),F('var','Variedad','text',{dl:VAR}),F('lote','Lote','text'),F('pres','Presentación / tipo de caja','text',{dl:PRES}),F('pobj','Peso objetivo (kg)','dec',{learn:1}),F('preal','Peso real de caja (kg)','dec',{req:1}),
+ F('dif','Diferencia (kg)','calc',{fn:v=>sub(v.preal,v.pobj),d:2,min:-0.1,max:0.1,msg:'Desviación de peso mayor a ±0,10 kg'}),F('nrac','N.° racimos por caja','int'),F('cal','Calibre','text',{dl:CAL}),F('bolsa','Bolsa / clamshell conforme (C/NC)','sel',{opts:CN,bad:['NC']}),F('so2','Generador SO₂ colocado (Sí/No)','sel',{opts:SN,bad:['No']}),F('rot','Rotulado conforme (C/NC)','sel',{opts:CN,bad:['NC']}),F('emb','Código embalador','text'),user('ctrl','Controlador'),obs()]},
+{code:'R-06',sheet:'R06 Calidad PT',name:'Calidad de producto terminado',stage:'Embalaje',icon:'badge-check',col:'#B5651D',freq:'Por pallet o cada 100 cajas',obj:'Comprobar que las cajas cumplen las especificaciones del cliente y del mercado de destino.',
+ fields:[fecha(),hora(),F('pallet','N.° pallet','text',{req:1,scan:1}),F('lote','Lote','text'),F('var','Variedad','text',{dl:VAR}),F('cal','Calibre (categoría)','text',{dl:CAL}),F('pnc','Peso neto caja (kg)','dec'),F('brix','Sólidos solubles (°Brix)','dec',{min:16}),F('color','Color','text',{learn:1}),F('firm','Firmeza / turgencia','sel',{opts:['Buena','Regular','Mala'],bad:['Mala']}),
+ F('dcal','Defectos de calidad (%)','dec'),F('dcon','Defectos de condición (%)','dec'),F('tot','Total defectos (%)','calc',{fn:v=>sum(v.dcal,v.dcon),d:1,max:5,msg:'Defectos > 5 %: evaluar retención'}),F('raq','Raquis (verde / pardo)','text',{dl:['Verde','Verde-pardo','Pardo']}),F('dict','Dictamen','sel',{opts:['Aprobado','Retenido','Reproceso'],bad:['Retenido','Reproceso'],req:1}),user('insp','Inspector'),obs()]},
+{code:'R-07',sheet:'R07 Paletizado',name:'Paletizado y armado de pallets',stage:'Paletizado',icon:'layers',col:'#8C6D1F',freq:'Por cada pallet',obj:'Identificar cada pallet con su contenido, cajas, peso y elementos de sujeción.',
+ fields:[fecha(),F('pallet','N.° pallet','text',{req:1,scan:1}),F('cli','Cliente / mercado','text',{learn:1}),F('var','Variedad','text',{dl:VAR}),F('pres','Presentación','text',{dl:PRES}),F('lotes','Lote(s)','text'),F('cajas','N.° cajas','int',{req:1}),F('pnc','Peso neto por caja (kg)','dec',{learn:1}),
+ F('pnp','Peso neto del pallet (kg)','calc',{fn:v=>num(v.cajas)!=null&&num(v.pnc)!=null?+(v.cajas*v.pnc).toFixed(2):'',d:1}),F('cam','N.° camadas','int'),F('esq','Esquineros y zunchos conformes (C/NC)','sel',{opts:CN,bad:['NC']}),F('etq','Etiqueta de pallet / código','text',{scan:1}),F('ht','Hora término','time',{def:'now'}),user(),obs()]},
+{code:'R-08',sheet:'R08 Prefrío',name:'Prefrío en túnel de aire forzado',stage:'Prefrío',icon:'snowflake',col:'#2F6FA8',freq:'Por carga de túnel',obj:'Registrar el enfriamiento rápido de los pallets hasta la temperatura de pulpa objetivo (≈ 0 °C).',
+ fields:[fecha(),F('tun','N.° túnel','text',{req:1,learn:1}),F('np','N.° pallets','int'),F('cods','Códigos de pallets','text'),F('hi','Hora ingreso','time'),F('ti','T° pulpa inicial (°C)','dec'),F('hs','Hora salida','time'),F('tf','T° pulpa final (°C)','dec',{max:1,msg:'Pulpa final > 1 °C: prolongar el prefrío'}),
+ F('tiempo','Tiempo de prefrío (h)','calc',{fn:v=>{const m=minDiff(v.hi,v.hs);return m===''?'':+(m/60).toFixed(2)},d:1,max:14,msg:'Prefrío mayor a 14 h'}),F('desc','Descenso de T° (°C)','calc',{fn:v=>sub(v.ti,v.tf),d:1}),F('timp','T° aire de impulsión (°C)','dec',{min:-2}),user(),obs()]},
+{code:'R-09',sheet:'R09 Cámara PT',name:'Temperatura en cámara de producto terminado',stage:'Almacenamiento',icon:'warehouse',col:'#2F6FA8',freq:'Cada 4 horas',daily:1,obj:'Mantener la cadena de frío: pulpa de -0,5 a 0,5 °C y HR de 90 a 95 %.',
+ fields:[fecha(),hora(),F('cam','N.° cámara','text',{req:1,learn:1}),F('tamb','T° ambiente (°C)','dec',{min:-1,max:1}),F('hr','Humedad relativa (%)','int',{min:90,max:98}),F('tp','T° pulpa (°C)','dec',{min:-1,max:1,msg:'Pulpa fuera de -1 a 1 °C'}),F('np','N.° pallets almacenados','int'),F('puer','Puertas y cortinas conformes (C/NC)','sel',{opts:CN,bad:['NC']}),F('hielo','Hielo en evaporadores (Sí/No)','sel',{opts:SN,bad:['Sí']}),user(),obs()]},
+{code:'R-10',sheet:'R10 Inspección contenedor',name:'Inspección de contenedor refrigerado',stage:'Embarque',icon:'container',col:'#5B2C6F',freq:'Por contenedor',obj:'Verificar limpieza, olores, daños, set point, ventilación, prefrío e inspección de seguridad del contenedor.',
+ fields:[fecha(),F('cont','N.° contenedor','text',{req:1,scan:1}),F('nav','Naviera','text',{learn:1}),F('book','Booking','text'),F('placa','Placa tracto / chofer','text'),F('prec','Precinto de naviera','text',{scan:1}),F('sp','Set point (°C)','dec',{min:-1,max:0.5,msg:'Set point fuera del rango usual (-1 a 0,5 °C)'}),F('vent','Ventilación (CBM/h)','int'),F('tint','T° interna al recibir (°C)','dec',{max:2}),
+ F('limp','Limpieza interior (C/NC)','sel',{opts:CN,bad:['NC']}),F('olor','Sin olores extraños (C/NC)','sel',{opts:CN,bad:['NC']}),F('dan','Paredes, piso y techo sin daños (C/NC)','sel',{opts:CN,bad:['NC']}),F('dren','Drenajes y empaquetaduras (C/NC)','sel',{opts:CN,bad:['NC']}),F('seg','Inspección de puntos críticos de seguridad (C/NC)','sel',{opts:CN,bad:['NC']}),F('dict','Dictamen','sel',{opts:['Aceptado','Rechazado'],bad:['Rechazado'],req:1}),user('insp','Inspector'),obs()]},
+{code:'R-11',sheet:'R11 Carga y despacho',name:'Carga y despacho de contenedor',stage:'Embarque',icon:'ship',col:'#5B2C6F',freq:'Por contenedor',obj:'Documentar la carga: pallets, cajas, tiempos, temperaturas, termorregistros, precintos y guías.',
+ fields:[fecha(),F('cont','N.° contenedor','text',{req:1,scan:1}),F('cli','Cliente','text',{learn:1}),F('dest','Puerto de destino','text',{learn:1}),F('np','N.° pallets cargados','int',{req:1}),F('cajas','Total cajas','int'),F('kg','Peso neto total (kg)','dec'),F('hi','Hora inicio carga','time'),F('hf','Hora fin carga','time'),
+ F('dur','Duración de carga (min)','calc',{fn:v=>minDiff(v.hi,v.hf),d:0,max:90,msg:'Carga mayor a 90 min: riesgo de ruptura de frío'}),F('tp','T° pulpa promedio en carga (°C)','dec',{max:1}),F('ntr','N.° termorregistrador','text',{scan:1}),F('ptr','Pallet / posición del termorregistrador','text'),F('pa','Precinto de aduana / SENASA','text',{scan:1}),F('pe','Precinto de la empresa','text',{scan:1}),F('guia','N.° guía de remisión','text'),user(),obs()]},
+{code:'R-12',sheet:'R12 Trazabilidad',name:'Trazabilidad pallet – lote – contenedor',stage:'Transversal',icon:'git-branch',col:'#56626B',freq:'Por pallet despachado',obj:'Vincular cada pallet con su lote, productor, fecha de embalaje y contenedor.',
+ fields:[F('pallet','N.° pallet','text',{req:1,scan:1}),F('femb','Fecha de embalaje','date',{def:'today'}),F('lote','Lote de materia prima','text'),F('prod','Productor / fundo','text',{learn:1}),F('ggn','GGN / código lugar de producción','text',{learn:1}),F('var','Variedad','text',{dl:VAR}),F('linea','Línea','text',{learn:1}),F('cajas','N.° cajas','int'),F('cam','Cámara de almacenamiento','text',{learn:1}),F('cont','N.° contenedor','text',{scan:1}),F('book','Booking','text'),F('dest','Destino','text',{learn:1}),F('femq','Fecha de embarque','date'),obs()]},
+{code:'R-13',sheet:'R13 Descarte y mermas',name:'Descarte, mermas y rendimiento',stage:'Transversal',icon:'recycle',col:'#56626B',freq:'Por lote (cierre de turno)',obj:'Cuantificar fruta exportable, descarte y merma por lote, y el destino del descarte.',
+ fields:[fecha(),F('lote','Lote','text',{req:1}),F('var','Variedad','text',{dl:VAR}),F('kgr','Kg recibidos (neto)','dec',{req:1}),F('kge','Kg exportables','dec',{req:1}),F('kgd','Kg descarte','dec'),F('merma','Kg merma','calc',{fn:v=>num(v.kgr)==null?'':+(v.kgr-(num(v.kge)||0)-(num(v.kgd)||0)).toFixed(2),d:1,min:0,msg:'Merma negativa: revise los kilos'}),
+ F('pexp','% exportable','calc',{fn:v=>div(v.kge,v.kgr),pct:1,min:0.8,msg:'Rendimiento exportable < 80 %'}),F('pdes','% descarte','calc',{fn:v=>div(v.kgd,v.kgr),pct:1}),F('causa','Causa principal del descarte','text',{learn:1}),F('destd','Destino del descarte','sel',{opts:['Mercado nacional','Industria','Compost','Otro']}),user(),obs()]},
+{code:'R-14',sheet:'R14 Materiales empaque',name:'Recepción de materiales de empaque',stage:'Soporte',icon:'package',col:'#7A7A3A',freq:'Por ingreso',obj:'Controlar que cajas, bolsas, clamshells, generadores de SO₂ y etiquetas lleguen conformes y documentados.',
+ fields:[fecha(),F('prov','Proveedor','text',{req:1,learn:1}),F('mat','Material / insumo','text',{req:1,dl:MAT}),F('lotep','Lote del proveedor','text'),F('cant','Cantidad','int'),F('und','Unidad','text',{dl:['und','millar','kg','rollo','caja']}),F('cert','Certificado de calidad / ficha técnica (Sí/No)','sel',{opts:SN,bad:['No']}),F('limp','Limpio, seco y sin plagas (C/NC)','sel',{opts:CN,bad:['NC']}),F('transp','Transporte en buen estado (C/NC)','sel',{opts:CN,bad:['NC']}),user('recib','Recibido por'),obs()]},
+{code:'R-15',sheet:'R15 Limpieza y desinfección',name:'Limpieza y desinfección',stage:'Soporte',icon:'spray-can',col:'#2F7D8C',freq:'Antes y después de cada turno',daily:1,obj:'Evidenciar la ejecución y verificación de la limpieza y desinfección (POES).',
+ fields:[fecha(),hora(),F('area','Área / equipo','text',{req:1,learn:1}),F('tipo','Tipo','sel',{opts:['Limpieza','Desinfección','Limpieza y desinfección']}),F('prodq','Producto químico','text',{learn:1}),F('conc','Concentración (ppm)','int'),F('met','Método','text',{learn:1}),F('ejec','Ejecutado por','text',{learn:1}),F('verif','Verificación (visual / ATP)','text',{dl:['Visual','ATP','Hisopado']}),F('res','Resultado (C/NC)','sel',{opts:CN,bad:['NC'],req:1}),user('vpor','Verificado por'),obs()]},
+{code:'R-16',sheet:'R16 Higiene personal',name:'Higiene y salud del personal',stage:'Soporte',icon:'hand',col:'#2F7D8C',freq:'Diario, al ingreso de turno',daily:1,obj:'Verificar las buenas prácticas de higiene antes de ingresar a manipular fruta.',
+ fields:[fecha(),F('turno','Turno','sel',{opts:['Día','Noche']}),F('nom','Nombre del trabajador','text',{req:1,learn:1}),F('area','Área','text',{learn:1}),F('unif','Uniforme completo y limpio (C/NC)','sel',{opts:CN,bad:['NC']}),F('cofia','Cofia y mascarilla (C/NC)','sel',{opts:CN,bad:['NC']}),F('unas','Uñas cortas sin esmalte (C/NC)','sel',{opts:CN,bad:['NC']}),F('joyas','Sin joyas ni accesorios (C/NC)','sel',{opts:CN,bad:['NC']}),F('manos','Lavado y desinfección de manos (C/NC)','sel',{opts:CN,bad:['NC']}),F('salud','Sin síntomas ni heridas expuestas (C/NC)','sel',{opts:CN,bad:['NC']}),user('sup','Supervisor'),obs()]},
+{code:'R-17',sheet:'R17 Cloro en agua',name:'Cloro residual y pH del agua',stage:'Soporte',icon:'droplet',col:'#2F6FA8',freq:'Diario por punto',daily:1,obj:'Verificar la potabilidad del agua: cloro libre residual ≥ 0,5 mg/L (DS N.° 031-2010-SA).',
+ fields:[fecha(),hora(),F('punto','Punto de muestreo','text',{req:1,learn:1}),F('cloro','Cloro libre residual (mg/L)','dec',{req:1,min:0.5,max:5,msg:'Cloro < 0,5 mg/L: no conforme'}),F('ph','pH','dec',{min:6.5,max:8.5}),F('turb','Turbidez / apariencia','text',{dl:['Transparente','Turbia']}),
+ F('res','Resultado (C/NC)','calc',{fn:v=>num(v.cloro)==null?'':(v.cloro>=0.5&&(num(v.ph)==null||(v.ph>=6.5&&v.ph<=8.5))?'C':'NC'),bad:['NC']}),F('acc','Acción correctiva','text'),user(),obs()]},
+{code:'R-18',sheet:'R18 Control de plagas',name:'Monitoreo y control de plagas',stage:'Soporte',icon:'bug',col:'#7A7A3A',freq:'Semanal',obj:'Monitorear estaciones de cebo y trampas, y registrar actividad y acciones.',
+ fields:[fecha(),F('est','N.° estación / trampa','text',{req:1,scan:1}),F('tipo','Tipo','sel',{opts:['Cebadero de roedores','Trampa de luz UV','Trampa pegante','Otro']}),F('ubic','Ubicación','text',{learn:1}),F('act','Actividad detectada (Sí/No)','sel',{opts:SN,bad:['Sí']}),F('plaga','Tipo de plaga','text',{dl:['Roedor','Mosca','Polilla','Cucaracha','Ave']}),F('cebo','Consumo de cebo (%)','int',{max:25}),F('acc','Acción tomada','text'),F('resp','Responsable','text',{learn:1}),obs()]},
+{code:'R-19',sheet:'R19 Vidrios y plásticos',name:'Vidrios y plásticos duros',stage:'Soporte',icon:'glass-water',col:'#7A7A3A',freq:'Semanal',obj:'Verificar el estado de vidrios y plásticos duros para prevenir peligros físicos.',
+ fields:[fecha(),F('cod','Código del ítem','text',{req:1,scan:1}),F('desc','Descripción','text',{learn:1}),F('ubic','Ubicación','text',{learn:1}),F('cant','Cantidad','int'),F('est','Estado','sel',{opts:['Intacto','Dañado','Roto'],bad:['Dañado','Roto'],req:1}),F('acc','Acción tomada','text'),user(),obs()]},
+{code:'R-20',sheet:'R20 Calibración equipos',name:'Verificación de balanzas y termómetros',stage:'Soporte',icon:'scale',col:'#56626B',freq:'Diario / anual',daily:1,obj:'Comprobar que balanzas, termómetros y refractómetros miden dentro de la tolerancia.',
+ fields:[fecha(),F('cod','Código del equipo','text',{req:1,scan:1,learn:1}),F('tipo','Tipo de equipo','sel',{opts:['Balanza','Termómetro','Refractómetro','Otro']}),F('ubic','Ubicación','text',{learn:1}),F('pat','Patrón utilizado','text',{learn:1}),F('vp','Valor del patrón','dec',{req:1}),F('lect','Lectura del equipo','dec',{req:1}),
+ F('err','Error','calc',{fn:v=>sub(v.lect,v.vp),d:2}),F('tol','Tolerancia (±)','dec',{learn:1}),F('res','Resultado','calc',{fn:v=>v.err===''||num(v.tol)==null?'':(Math.abs(v.err)<=v.tol?'C':'NC'),bad:['NC']}),user(),obs()]},
+{code:'R-21',sheet:'R21 Acciones correctivas',name:'No conformidades y acciones correctivas',stage:'Transversal',icon:'triangle-alert',col:'#C0392B',freq:'Ante cada no conformidad',obj:'Registrar desviaciones, su causa, la acción correctiva y su verificación hasta el cierre.',
+ fields:[F('n','N.°','int',{def:'seq'}),fecha(),F('orig','Registro / área de origen','text',{req:1}),F('desc','Descripción de la no conformidad','area',{req:1}),F('causa','Causa','area'),F('acc','Acción correctiva','area',{req:1}),F('resp','Responsable','text',{learn:1}),F('fcomp','Fecha compromiso','date'),F('fcie','Fecha de cierre','date'),F('verif','Verificado por','text'),F('estado','Estado','sel',{opts:['Abierta','Cerrada'],req:1})]},
+];
+const STAGES=['Todos',...new Set(REGS.map(r=>r.stage))];
+const byCode=c=>REGS.find(r=>r.code===c);
+
+/* ======================= estado ======================= */
+const ROLES=['Encargado de recepción','Inspector de calidad','Operador de fumigación','Operador de frío','Controlador de línea','Encargado de paletizado','Supervisor de despacho','Supervisor de BPM','Jefe de packing','Aseguramiento de calidad','Almacenero'];
+let S=Object.assign({user:'',role:ROLES[1],comp:'',url:'',auto:true,vib:true,speak:false,geo:false,lang:'es-PE',theme:''},store.get('set',{}));
+let RECS=[], CUR=null;
+
+/* ======================= IndexedDB ======================= */
+const DB={db:null,
+ open(){return new Promise(res=>{try{const q=indexedDB.open('packingUva',1);q.onupgradeneeded=()=>q.result.createObjectStore('recs',{keyPath:'id'});q.onsuccess=()=>{this.db=q.result;res(true)};q.onerror=()=>res(false)}catch(e){res(false)}})},
+ tx(m){return this.db.transaction('recs',m).objectStore('recs')},
+ all(){return new Promise(res=>{if(!this.db)return res(store.get('recs_fb',[]));const q=this.tx('readonly').getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>res([])})},
+ put(o){return new Promise(res=>{if(!this.db){const a=store.get('recs_fb',[]).filter(x=>x.id!==o.id);a.push(o);store.set('recs_fb',a);return res()}const q=this.tx('readwrite').put(o);q.onsuccess=q.onerror=()=>res()})},
+ clear(){return new Promise(res=>{if(!this.db){store.set('recs_fb',[]);return res()}const q=this.tx('readwrite').clear();q.onsuccess=q.onerror=()=>res()})}
+};
+
+/* ======================= Lottie (animaciones propias, sin derechos de terceros) ======================= */
+const lst=v=>({a:0,k:v});
+function lkf(fr){return{a:1,k:fr.map((f,i)=>{const s=Array.isArray(f[1])?f[1]:[f[1]];const o={t:f[0],s};if(i<fr.length-1){const n=s.length;o.i={x:Array(n).fill(.3),y:Array(n).fill(1)};o.o={x:Array(n).fill(.6),y:Array(n).fill(0)}}return o})}}
+const lrgb=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).concat(1);
+const ltr=()=>({ty:'tr',p:lst([0,0]),a:lst([0,0]),s:lst([100,100]),r:lst(0),o:lst(100),sk:lst(0),sa:lst(0)});
+const lfill=c=>({ty:'fl',c:lst(lrgb(c)),o:lst(100),r:1});
+const lstroke=(c,w)=>({ty:'st',c:lst(lrgb(c)),o:lst(100),w:lst(w),lc:2,lj:2,ml:4});
+const lell=(d,p=[0,0])=>({ty:'el',p:lst(p),s:lst([d,d]),d:1});
+const lpath=v=>({ty:'sh',ks:lst({i:v.map(()=>[0,0]),o:v.map(()=>[0,0]),v,c:false})});
+const ltrim=(s,e)=>({ty:'tm',s,e,o:lst(0),m:1});
+const lgr=it=>({ty:'gr',it:it.concat([ltr()])});
+const llayer=(ind,shapes,ks={})=>({ddd:0,ind,ty:4,nm:'L'+ind,sr:1,ip:0,op:600,st:0,bm:0,ao:0,ks:Object.assign({o:lst(100),r:lst(0),p:lst([50,50,0]),a:lst([0,0,0]),s:lst([100,100,100])},ks),shapes});
+const lcomp=(layers,op)=>({v:'5.7.4',fr:60,ip:0,op,w:100,h:100,nm:'uva',ddd:0,assets:[],layers});
+const LOT={
+ check:c=>lcomp([llayer(1,[lgr([lpath([[-17,1],[-5,13],[19,-11]]),ltrim(lst(0),lkf([[14,0],[38,100]])),lstroke('#FFFFFF',7)])]),
+   llayer(2,[lgr([lell(76),lfill(c)])],{s:lkf([[0,[0,0,100]],[14,[112,112,100]],[22,[100,100,100]]])}),
+   llayer(3,[lgr([lell(76),lstroke(c,3)])],{s:lkf([[14,[100,100,100]],[46,[140,140,100]]]),o:lkf([[0,0],[14,70],[46,0]])})],70),
+ warn:c=>lcomp([llayer(1,[lgr([lpath([[0,-14],[0,4]]),ltrim(lst(0),lkf([[12,0],[30,100]])),lstroke('#FFFFFF',7)]),lgr([lell(7,[0,15]),lfill('#FFFFFF')])],{o:lkf([[10,0],[16,100]])}),
+   llayer(2,[lgr([lell(76),lfill(c)])],{s:lkf([[0,[0,0,100]],[14,[112,112,100]],[22,[100,100,100]]]),r:lkf([[22,0],[28,-8],[34,8],[40,-4],[46,0]])})],70),
+ pulse:c=>lcomp([llayer(1,[lgr([lell(30),lfill(c)])],{s:lkf([[0,[100,100,100]],[30,[86,86,100]],[60,[100,100,100]]])}),
+   llayer(2,[lgr([lell(34),lfill(c)])],{s:lkf([[0,[90,90,100]],[60,[250,250,100]]]),o:lkf([[0,50],[60,0]])}),
+   llayer(3,[lgr([lell(34),lstroke(c,2)])],{s:lkf([[0,[150,150,100]],[60,[290,290,100]]]),o:lkf([[0,40],[60,0]])})],60),
+ dots:c=>lcomp([0,1,2].map(i=>{const x=26+i*24,d=i*8;return llayer(i+1,[lgr([lell(16),lfill(c)])],{p:lkf([[d,[x,56,0]],[d+12,[x,36,0]],[d+24,[x,56,0]],[60,[x,56,0]]])})}),60),
+ spin:c=>lcomp([llayer(1,[lgr([lell(60),ltrim(lst(0),lkf([[0,10],[30,75],[60,10]])),lstroke(c,8)])],{r:lkf([[0,0],[60,360]])})],60),
+ grape:()=>{const P=[[-16,-4],[0,-4],[16,-4],[-8,10],[8,10],[0,24]];
+   return lcomp([llayer(1,[lgr([lpath([[0,-30],[2,-18]]),lstroke('#6B4E2E',4)]),lgr([{ty:'el',p:lst([12,-26]),s:lst([22,12]),d:1},lfill('#6E9F4E')]),...P.map(p=>lgr([lell(17,p),lfill('#8E4BA8')])),...P.map(p=>lgr([lell(5,[p[0]-3,p[1]-3]),lfill('#D9B8E8')]))],
+   {p:lst([50,34,0]),a:lst([0,-16,0]),r:lkf([[0,-7],[60,7],[120,-7]]),s:lkf([[0,[96,96,100]],[60,[102,102,100]],[120,[96,96,100]]])})],120)}
+};
+const LIVE=new Map();
+function playL(el,key,loop=true,color){if(!el)return;try{LIVE.get(el)?.destroy()}catch(e){}el.innerHTML='';
+ if(!window.lottie){el.innerHTML='<div style="font-size:40px;display:grid;place-items:center;height:100%">'+({check:'✔',warn:'!',grape:'🍇'}[key]||'…')+'</div>';return}
+ const css=getComputedStyle(document.documentElement);const col=color||(css.getPropertyValue(key==='warn'?'--warn':key==='check'?'--ok':'--grape').trim()||'#5B2C6F');
+ const hex=/^#[0-9a-f]{6}$/i.test(col)?col:'#5B2C6F';
+ const a=lottie.loadAnimation({container:el,renderer:'svg',loop,autoplay:true,animationData:LOT[key](hex)});LIVE.set(el,a);return a}
+
+/* ======================= cálculos de valores ======================= */
+function computeVals(reg,v){reg.fields.forEach(f=>{if(f.type==='calc'){const r=f.fn(v);v[f.key]=r===''||r==null||(typeof r==='number'&&!isFinite(r))?'':r}});return v}
+function checkField(f,val){
+ if(val===''||val==null)return null;
+ if(f.bad&&f.bad.includes(val))return{lvl:'bad',msg:f.type==='calc'?'No conforme':'No conformidad: registrar acción correctiva'};
+ const n=num(val);if(n!=null&&(f.min!=null||f.max!=null)&&(f.type==='int'||f.type==='dec'||f.type==='calc')){
+  if((f.min!=null&&n<f.min)||(f.max!=null&&n>f.max)){const r=f.pct?`${f.min!=null?Math.round(f.min*100)+' %':''}`:`${f.min??'—'} a ${f.max??'—'}`;return{lvl:'warn',msg:f.msg||('Fuera de rango referencial ('+r+')')}}}
+ return null}
+const fmtCalc=(f,v)=>v===''?'—':f.pct?(v*100).toLocaleString('es-PE',{maximumFractionDigits:1})+' %':typeof v==='number'?fmtN(v,f.d??2):v;
+function recAlerts(reg,vals){const out=[];reg.fields.forEach(f=>{const c=checkField(f,vals[f.key]);if(c)out.push({lvl:c.lvl,txt:`${f.label}: ${f.type==='calc'?fmtCalc(f,vals[f.key]):vals[f.key]} — ${c.msg}`})});return out}
+
+/* ======================= dictado por voz ======================= */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let REC=null,VMODE=null,VFIELD=null;
+const UN={cero:0,un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiun:21,veintiuno:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,doscientas:200,trescientos:300,trescientas:300,cuatrocientos:400,quinientos:500,seiscientos:600,setecientos:700,ochocientos:800,novecientos:900};
+function wordsInt(toks){let tot=0,cur=0,any=false;for(const t of toks){if(!t||t==='y')continue;if(t==='mil'){cur=(cur||1)*1000;tot+=cur;cur=0;any=true}else if(UN[t]!=null){cur+=UN[t];any=true}else if(/^\d+$/.test(t)){cur+=+t;any=true}else return null}return any?tot+cur:null}
+function speechNum(raw){let t=norm(raw).replace(/\b(grados?|celsius|centigrados?|kilos?|kilogramos?|kg|ppm|milimetros?|mm|por ciento|porciento|%|cajas?|jabas?|pallets?|minutos?|horas?|mg\/l|miligramos por litro)\b/g,' ').trim();
+ const neg=/\bmenos\b|^-/.test(t);t=t.replace(/\bmenos\b/g,' ').replace(/^-/,'').trim();
+ if(/\d/.test(t)){t=t.replace(/\s*(coma|punto)\s*/g,'.').replace(/\s+/g,'');if(/^\d{1,3}(\.\d{3})+$/.test(t))t=t.replace(/\./g,'');t=t.replace(',','.');const m=t.match(/\d+(\.\d+)?/);return m?(neg?-1:1)*Number(m[0]):null}
+ const [a,b]=t.split(/\s+(?:coma|punto)\s+/);const ia=wordsInt(a.split(' '));if(ia==null)return null;let val=ia;
+ if(b){const bt=b.split(' ');let zeros=0;while(bt[0]==='cero'){zeros++;bt.shift()}const ib=bt.length?wordsInt(bt):0;if(ib!=null)val=Number(ia+'.'+'0'.repeat(zeros)+ib)}return(neg?-1:1)*val}
+function speechTime(raw){const t=norm(raw);if(/ahora|en este momento/.test(t))return nowHM();
+ let m=t.match(/(\d{1,2})\s*[:.h ]\s*(\d{2})/);if(m)return pad(Math.min(23,+m[1]))+':'+m[2];
+ const pm=/tarde|noche|pm/.test(t);const parts=t.replace(/\b(de la|del|la|las|a|horas?|manana|tarde|noche|am|pm|con)\b/g,' ').split(/\s+y\s+|\s+/).filter(Boolean);
+ const h=speechNum(parts[0]||'');if(h==null)return null;let mm=0;const rest=parts.slice(1).join(' ');if(/media/.test(rest))mm=30;else if(/cuarto/.test(rest))mm=15;else if(rest){const x=speechNum(rest);if(x!=null)mm=x}
+ let hh=h+(pm&&h<12?12:0);return pad(hh%24)+':'+pad(Math.min(59,mm))}
+function speechDate(raw){const t=norm(raw);const d=new Date();if(/\bayer\b/.test(t))d.setDate(d.getDate()-1);else if(/manana/.test(t))d.setDate(d.getDate()+1);else if(!/\bhoy\b/.test(t)){const m=t.match(/(\d{1,2})\s*(?:de|\/|-)?\s*(\d{1,2}|[a-z]+)?/);const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+ if(m){const day=+m[1];let mon=d.getMonth();if(m[2]){mon=/^\d+$/.test(m[2])?+m[2]-1:MES.findIndex(x=>x.startsWith(m[2].slice(0,3)));if(mon<0)mon=d.getMonth()}d.setMonth(mon,day)}else return null}
+ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function speechSel(f,raw){const t=norm(raw);if(f.opts.includes('C')){if(/no conforme|\bnc\b|\bmal\b|incorrecto/.test(t))return'NC';if(/conforme|\bc\b|\bbien\b|\bok\b|correcto|cumple/.test(t))return'C'}
+ if(f.opts.includes('Sí')){if(/^(no|negativo)\b/.test(t))return'No';if(/^(si|afirmativo|correcto)\b/.test(t))return'Sí'}
+ let best=null,bs=0;f.opts.forEach(o=>{const s=sim(norm(o),t);if(s>bs){bs=s;best=o}});return bs>.35?best:null}
+function toValue(f,raw){raw=String(raw).trim();if(!raw)return null;switch(f.type){case'int':case'dec':{const n=speechNum(raw);return n==null?null:(f.type==='int'?Math.round(n):n)}case'time':return speechTime(raw);case'date':return speechDate(raw);case'sel':return speechSel(f,raw);
+ default:{let s=raw.replace(/\s+(guion|guión)\s+/gi,'-');if(/^(n|numero|codigo|placa|guia|lote|pallet|cont|book|prec|pa|pe|ntr|cod|est|etq)/.test(f.key)||f.scan)s=s.replace(/\s+/g,' ').toUpperCase();return s.charAt(0).toUpperCase()+s.slice(1)}}}
+function bigr(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return a}
+function sim(a,b){if(!a||!b)return 0;if(a===b)return 1;const x=bigr(a),y=bigr(b);if(!x.length||!y.length)return 0;let h=0;const m=new Map();y.forEach(g=>m.set(g,(m.get(g)||0)+1));x.forEach(g=>{if(m.get(g)>0){h++;m.set(g,m.get(g)-1)}});return 2*h/(x.length+y.length)}
+function aliases(f){const base=norm(f.label.replace(/\(.*?\)/g,'')).replace(/[.:]/g,'').trim();const a=new Set([base]);
+ a.add(base.replace(/^n ?\.? ?°? ?/,'numero de ').trim());a.add(base.replace(/^n\s+/,'numero '));if(/^t /.test(base)||base.startsWith('t '))a.add(base.replace(/^t /,'temperatura '));
+ base.split(' / ').forEach(p=>a.add(p.trim()));
+ const w=base.split(' ');[2,3].forEach(n=>{if(w.length>n){const s=w.slice(0,n).join(' ');if(s.length>=6&&!/ (y|de|del|en|a)$/.test(s)&&CUR.reg.fields.filter(o=>o!==f&&norm(o.label).startsWith(s)).length===0)a.add(s)}});const extra={tp:['temperatura de pulpa','temperatura pulpa','pulpa'],pb:['bruto','peso bruto'],tara:['tara'],brix:['brix','grados brix','solidos solubles'],acid:['acidez'],hr:['humedad','humedad relativa'],obs:['observacion','observaciones','nota'],cloro:['cloro'],ph:['pe hache','ph'],sp:['set point','setpoint'],cont:['contenedor'],lote:['lote'],var:['variedad'],prod:['productor','fundo'],jabas:['jabas','numero de jabas'],pallet:['pallet','palet'],cajas:['cajas','numero de cajas'],dict:['dictamen'],resp:['responsable'],tamb:['temperatura ambiente','ambiente'],ti:['temperatura inicial','inicial'],tf:['temperatura final','final'],preal:['peso real','peso caja'],pobj:['peso objetivo'],kgr:['kilos recibidos'],kge:['kilos exportables','exportable'],kgd:['kilos descarte','descarte']}[f.key];
+ (extra||[]).forEach(x=>a.add(x));return[...a].filter(x=>x.length>1).sort((x,y)=>y.length-x.length)}
+function parseUtter(text){const t=' '+norm(text)+' ';const fields=CUR.reg.fields.filter(f=>f.type!=='calc');const hits=[];
+ fields.forEach(f=>aliases(f).forEach(al=>{let i=t.indexOf(' '+al+' ');while(i>=0){hits.push({f,i:i+1,end:i+1+al.length});i=t.indexOf(' '+al+' ',i+1)}}));
+ hits.sort((a,b)=>a.i-b.i||(b.end-b.i)-(a.end-a.i));const sel=[];let lastEnd=-1;hits.forEach(h=>{if(h.i>=lastEnd){sel.push(h);lastEnd=h.end}});
+ const out=[];sel.forEach((h,k)=>{const nxt=sel[k+1]?sel[k+1].i:t.length;const val=t.slice(h.end,nxt).replace(/^\s*(es|son|de|igual a|:)\s+/,'').trim();if(val)out.push({f:h.f,raw:val})});return out}
+function handleSpeech(text){const t=norm(text);$('#hudTx').textContent='«'+text+'»';
+ if(VMODE==='field'){const f=CUR.reg.fields.find(x=>x.key===VFIELD);const v=toValue(f,text);if(v!=null&&v!==''){setV(f,v,'voz');toast(`${f.label}: <b>${esc(f.type==='date'?fmtD(v):v)}</b>`,'info',2200)}else toast('No se entendió el valor. Intente de nuevo.','warn');stopVoice();return}
+ if(/^(parar|detener|terminar|stop|fin del dictado)$/.test(t))return stopVoice();
+ if(/^(siguiente|proximo|adelante)$/.test(t))return focusNext();
+ if(/^(anterior|atras)$/.test(t))return focusNext(null,true);
+ if(/^(guardar|grabar|guardar registro)$/.test(t)){stopVoice();return saveRec(false)}
+ const pairs=parseUtter(text);let ok=0;
+ pairs.forEach(p=>{const v=toValue(p.f,p.raw);if(v!=null&&v!==''){setV(p.f,v,'voz');ok++}});
+ if(!ok){const a=document.activeElement;const fe=a&&a.closest&&a.closest('.field');if(fe){const f=CUR.reg.fields.find(x=>x.key===fe.dataset.key);const v=toValue(f,text);if(v!=null&&v!==''){setV(f,v,'voz');ok++;focusNext(a)}}}
+ $('#hudHelp').textContent=ok?`✓ ${ok} campo(s) llenado(s)`:'No se identificó el campo. Diga, por ejemplo: «peso bruto 1180 tara 280».'}
+function startVoice(mode,key){if(!SR)return modal(`<h2><i data-lucide="mic-off"></i>Dictado no disponible</h2><p>Este navegador no tiene reconocimiento de voz. Use <b>Google Chrome</b> o <b>Microsoft Edge</b> (en Android, iPhone o computadora) y permita el micrófono.</p><p class="sub">También puede usar el micrófono del teclado del celular dentro de cada campo.</p><div class="mfoot"><button class="btn pri" onclick="closeModal()">Entendido</button></div>`);
+ if(REC){const same=VMODE===mode&&VFIELD===key;stopVoice();if(same)return}
+ VMODE=mode;VFIELD=key;REC=new SR();REC.lang=S.lang;REC.interimResults=true;REC.continuous=mode==='form';REC.maxAlternatives=1;
+ REC.onresult=e=>{let fin='',tmp='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)fin+=r[0].transcript;else tmp+=r[0].transcript}if(tmp)$('#hudTx').textContent=tmp+'…';if(fin)handleSpeech(fin.trim())};
+ REC.onerror=e=>{if(e.error==='not-allowed')toast('Permita el uso del micrófono en el navegador.','bad');else if(e.error!=='no-speech'&&e.error!=='aborted')toast('Error de dictado: '+e.error,'warn')};
+ REC.onend=()=>{if(REC&&VMODE==='form'){try{REC.start()}catch(x){}}else hideHud()};
+ try{REC.start()}catch(x){}
+ const f=key&&CUR.reg.fields.find(x=>x.key===key);
+ $('#hudTx').textContent=mode==='field'?`Dicte: ${f.label}`:'Escuchando… dicte campo y valor';
+ $('#hudHelp').textContent=mode==='field'?(f.type==='sel'?'Opciones: '+f.opts.join(', '):f.type==='time'?'Ej.: «siete y cuarenta» o «ahora»':f.type==='date'?'Ej.: «hoy», «ayer», «3 de noviembre»':'Diga el valor'):'Ej.: «lote L doce, jabas 120, peso bruto 1180, tara 280». Comandos: «siguiente», «guardar», «parar».';
+ $('#hud').classList.add('on');playL($('#hudLot'),'pulse',true,'#C0392B');
+ $('#tVoice').classList.toggle('live',mode==='form');$('#tVoice').innerHTML=mode==='form'?'<i data-lucide="square"></i>Detener dictado':'<i data-lucide="mic"></i>Dictar';
+ $$('[data-mic]').forEach(b=>b.classList.toggle('live',mode==='field'&&b.dataset.mic===key));icons();vib(15)}
+function stopVoice(){const r=REC;REC=null;VMODE=null;try{r&&r.stop()}catch(e){}hideHud();$$('[data-mic]').forEach(b=>b.classList.remove('live'));const t=$('#tVoice');t.classList.remove('live');t.innerHTML='<i data-lucide="mic"></i>Dictar';icons()}
+function hideHud(){$('#hud').classList.remove('on')}
+$('#hudStop').onclick=stopVoice;$('#tVoice').onclick=()=>startVoice('form');
+
+/* ======================= llenado por foto (OCR) ======================= */
+const loadScript=src=>new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('No se pudo cargar '+src));document.head.appendChild(s)});
+$('#tPhoto').onclick=()=>{modal(`<h2><i data-lucide="scan-text"></i>Llenar con foto</h2>
+ <p class="sub">Tome una foto del formato en papel, de una etiqueta, de la pantalla de una balanza o de un termómetro. La app lee el texto y llena los campos que reconoce. <b>Revise siempre los valores.</b></p>
+ <ul class="bp" style="margin-bottom:12px"><li>Buena luz, sin sombras, hoja plana y de frente.</li><li>Mejor resultado con texto escrito como «Campo: valor» o con letra de imprenta.</li></ul>
+ <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" id="ocrCam"><i data-lucide="camera"></i>Tomar o elegir foto</button></div>
+ <input type="file" id="ocrIn" accept="image/*" capture="environment" hidden><div id="ocrOut"></div><div class="mfoot"><button class="btn" onclick="closeModal()">Cerrar</button></div>`,m=>{
+ m.querySelector('#ocrCam').onclick=()=>m.querySelector('#ocrIn').click();
+ m.querySelector('#ocrIn').onchange=e=>{const f=e.target.files[0];if(f)runOCR(f)}})};
+async function runOCR(file){const out=$('#ocrOut');out.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-top:14px"><div class="lot" style="width:60px;height:60px" id="ocrLot"></div><div style="flex:1"><b id="ocrSt">Preparando imagen…</b><div class="prog"><i id="ocrBar"></i></div></div></div>`;playL($('#ocrLot'),'dots');
+ try{const url=await compress(file,1800,.92);CUR.photos.length<6&&CUR.photos.push(await compress(file,1280,.72));drawThumbs();
+  const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=url});const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const x=c.getContext('2d');x.drawImage(img,0,0);
+  const d=x.getImageData(0,0,c.width,c.height),p=d.data;let mn=255,mxv=0;for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];p[i]=g;if(g<mn)mn=g;if(g>mxv)mxv=g}
+  const k=255/Math.max(1,mxv-mn);for(let i=0;i<p.length;i+=4){const g=Math.min(255,Math.max(0,(p[i]-mn)*k));p[i]=p[i+1]=p[i+2]=g}x.putImageData(d,0,0);
+  $('#ocrSt').textContent='Cargando lector de texto (solo la primera vez)…';
+  await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');
+  const res=await Tesseract.recognize(c,'spa',{logger:m=>{if(m.status==='recognizing text'){$('#ocrSt').textContent='Leyendo texto… '+Math.round(m.progress*100)+'%';$('#ocrBar').style.width=m.progress*100+'%'}else if($('#ocrSt'))$('#ocrSt').textContent=({'loading language traineddata':'Descargando idioma español…','initializing api':'Iniciando…'}[m.status]||'Procesando…')}});
+  showOCR(res.data.text||'')}
+ catch(err){out.innerHTML=`<p class="tag bad" style="margin-top:12px">No se pudo leer la imagen: ${esc(err.message)}. Revise su conexión a internet (el lector se descarga la primera vez).</p>`}}
+function showOCR(text){const lines=text.split('\n').map(s=>s.trim()).filter(Boolean);const filled=[];const fields=CUR.reg.fields.filter(f=>f.type!=='calc');
+ lines.forEach(l=>{const m=l.match(/^(.{2,48}?)\s*[:=]\s*(.+)$/)||l.match(/^([A-Za-zÁÉÍÓÚáéíóúñÑ°.\s/()]{3,40}?)\s+(-?\d[\d.,]*\s*\S*)$/);if(!m)return;const lab=norm(m[1]);let best=null,bs=0;
+  fields.forEach(f=>aliases(f).forEach(a=>{const s=sim(a,lab);if(s>bs){bs=s;best=f}}));if(best&&bs>=.55&&!filled.find(x=>x.f===best)){const v=toValue(best,m[2]);if(v!=null&&v!==''){setV(best,v,'foto');filled.push({f:best,v})}}});
+ const tokens=[...new Set((text.match(/-?\d+(?:[.,]\d+)?|[A-ZÁÉÍÓÚÑ0-9][A-ZÁÉÍÓÚÑ0-9\-\/]{2,}|[A-Za-zÁÉÍÓÚáéíóúñÑ][a-záéíóúñ]{3,}(?:\s[A-Z][a-záéíóúñ]+)?/g)||[]))].slice(0,60);
+ $('#ocrOut').innerHTML=`<div class="section-t" style="margin-top:16px"><i data-lucide="sparkles"></i>${filled.length?filled.length+' campo(s) llenado(s) automáticamente':'No se reconocieron campos automáticamente'}</div>
+ ${filled.length?`<div class="list">${filled.map(x=>`<div class="li"><span class="tag gr">foto</span><div><b>${esc(x.f.label)}</b>: ${esc(x.f.type==='date'?fmtD(x.v):x.v)}</div></div>`).join('')}</div>`:''}
+ <p class="sub" style="margin:14px 0 6px">Para el resto: <b>toque un campo del formulario y luego un valor</b> de abajo para copiarlo.</p>
+ <div class="chips" id="ocrChips">${tokens.map(t=>`<button class="vchip" data-t="${esc(t)}">${esc(t)}</button>`).join('')||'<span class="sub">Sin texto legible.</span>'}</div>
+ <details style="margin-top:12px"><summary class="sub" style="cursor:pointer">Ver texto leído</summary><div class="ocr-text">${esc(text)}</div></details>`;icons();
+ $('#modal').style.maxWidth='620px';
+ $('#ocrChips').onclick=e=>{const b=e.target.closest('.vchip');if(!b)return;const key=LASTF;if(!key){toast('Primero toque el campo del formulario donde va este valor (cierre esta ventana o desplácela).','info');return}
+  const f=CUR.reg.fields.find(x=>x.key===key);const v=toValue(f,b.dataset.t);if(v==null||v==='')return toast('Ese valor no corresponde al tipo de campo.','warn');setV(f,v,'foto');b.classList.add('used');toast(`${f.label}: <b>${esc(v)}</b>`,'info',1800);
+  const nf=CUR.reg.fields.filter(x=>x.type!=='calc');const i=nf.indexOf(f);LASTF=nf[i+1]?.key||null;$('#ocrHint')&&($('#ocrHint').textContent=LASTF?'Siguiente: '+nf[i+1].label:'')};
+ const pick=document.createElement('div');pick.className='fld';pick.style.marginTop='10px';
+ pick.innerHTML=`<span>Campo de destino para los valores</span><select id="ocrTarget" class="plain"><option value="">— Elija un campo —</option>${CUR.reg.fields.filter(f=>f.type!=='calc').map(f=>`<option value="${f.key}">${esc(f.label)}</option>`).join('')}</select><small class="sub" id="ocrHint"></small>`;
+ $('#ocrOut').insertBefore(pick,$('#ocrChips'));$('#ocrTarget').onchange=e=>{LASTF=e.target.value||null};
+ if(filled.length){vib(20);toast(`Se llenaron ${filled.length} campo(s) desde la foto. Revíselos.`,'ok')}}
+let LASTF=null;document.addEventListener('focusin',e=>{const fe=e.target.closest&&e.target.closest('#panels .field');if(fe){LASTF=fe.dataset.key;const t=$('#ocrTarget');if(t)t.value=LASTF}});
+
+/* ======================= escáner de códigos ======================= */
+let SCAN=null;
+$('#tScan').onclick=()=>{const f=CUR.reg.fields.find(x=>x.scan);if(!('BarcodeDetector' in window))return modal(`<h2><i data-lucide="scan-barcode"></i>Escáner no disponible</h2><p>Este navegador no tiene lector de códigos integrado. Funciona en <b>Chrome para Android</b> y en Edge/Chrome recientes. Puede escribir o dictar el código.</p><div class="mfoot"><button class="btn pri" onclick="closeModal()">Entendido</button></div>`);openScan((LASTF&&CUR.reg.fields.find(x=>x.key===LASTF&&x.type==='text')?LASTF:f?.key)||null)};
+async function openScan(key){const fl=CUR.reg.fields.filter(x=>x.type==='text');
+ modal(`<h2><i data-lucide="scan-barcode"></i>Escanear código de barras o QR</h2><label class="fld"><span>Guardar en el campo</span><select id="scKey" class="plain">${fl.map(f=>`<option value="${f.key}" ${f.key===key?'selected':''}>${esc(f.label)}</option>`).join('')}</select></label><video class="scan" id="scV" playsinline muted></video><p class="sub" id="scSt" style="margin-top:8px">Apunte la cámara al código…</p><div class="mfoot"><button class="btn" onclick="closeModal()">Cancelar</button></div>`);
+ try{const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=$('#scV');v.srcObject=st;await v.play();
+  const det=new BarcodeDetector();SCAN={st,t:setInterval(async()=>{try{const r=await det.detect(v);if(r.length){const code=r[0].rawValue;const f=CUR.reg.fields.find(x=>x.key===$('#scKey').value);setV(f,code,'escáner');vib([20,30,20]);toast(`${f.label}: <b>${esc(code)}</b>`,'ok');closeModal()}}catch(e){}},300)}}
+ catch(e){$('#scSt').textContent='No se pudo abrir la cámara: '+e.message}}
+function stopScan(){if(SCAN){clearInterval(SCAN.t);SCAN.st.getTracks().forEach(t=>t.stop());SCAN=null}}
+
+/* ======================= sincronización con Apps Script ======================= */
+function payload(r){const reg=byCode(r.code);return{id:r.id,sheet:reg.sheet,code:r.code,version:r.version,motivo:r.motivo||'',
+ headers:reg.fields.map(f=>f.label),types:reg.fields.map(f=>f.type),values:reg.fields.map(f=>{const v=r.values[f.key];return v===undefined?'':v}),
+ meta:Object.assign({},r.meta),alerts:(r.alerts||[]).map(a=>a.txt),photos:r.photosSent?[]:(r.photos||[]),signature:r.photosSent?null:r.signature}}
+let SYNCING=false;
+async function syncAll(silent){if(SYNCING)return;if(!S.url){if(!silent)toast('Configure la URL de Apps Script en Ajustes para enviar a Google Sheets.','info');return}
+ if(!navigator.onLine){if(!silent)toast('Sin conexión. Los registros se enviarán cuando vuelva la señal.','warn');return}
+ const pend=RECS.filter(r=>r.sync!=='ok'&&r.sync!=='sent');if(!pend.length){if(!silent)toast('Todo está sincronizado.','ok');return}
+ SYNCING=true;updChip();let ok=0,fail=0;
+ for(const r of pend){try{const res=await fetch(S.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'upsert',record:payload(r)})});
+   const j=await res.json();if(!j.ok)throw new Error(j.error||'error');r.sync='ok';ok++}
+  catch(e){try{await fetch(S.url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'upsert',record:payload(r)})});r.sync='sent';ok++}catch(e2){r.sync='err';r.err=String(e2);fail++}}
+  if(r.sync!=='err'){r.syncedAt=new Date().toISOString();r.photosSent=true}await DB.put(r);updChip()}
+ SYNCING=false;updChip();if(VIEW==='hist')renderHist();if(VIEW==='home')renderHome();
+ if(ok)toast(`${ok} registro(s) enviados a Google Sheets.`,'ok');if(fail)toast(`${fail} registro(s) no se pudieron enviar. Se reintentará.`,'warn')}
+$('#syncChip').onclick=()=>syncAll(false);$('#syncNow').onclick=()=>syncAll(false);
+addEventListener('online',()=>{updChip();toast('Conexión recuperada.','ok',2000);S.auto&&syncAll(true)});addEventListener('offline',()=>{updChip();toast('Sin señal: los registros se guardan en el equipo.','warn')});
+setInterval(()=>S.auto&&syncAll(true),90000);
+
+/* ======================= historial ======================= */
+function renderHist(){const sel=$('#hReg');if(!sel.options.length){sel.innerHTML=REGS.map(r=>`<option value="${r.code}">${r.code} · ${esc(r.name)}</option>`).join('');$('#hMonth').value=todayISO().slice(0,7)}
+ const reg=byCode(sel.value),mon=$('#hMonth').value,q=norm($('#hq').value);
+ const list=RECS.filter(r=>r.code===reg.code&&(!mon||(recDate(r)||'').startsWith(mon))&&(!q||norm(Object.values(r.values).join(' ')).includes(q))).sort((a,b)=>b.meta.created.localeCompare(a.meta.created));
+ if(!list.length){$('#hBody').innerHTML=`<div class="card empty"><div class="lot" id="lotH" style="width:130px;height:130px"></div><b>Aún no hay registros de ${esc(reg.name.toLowerCase())} en este mes.</b><button class="btn pri" data-open="${reg.code}" style="margin-top:12px"><i data-lucide="plus"></i>Nuevo registro</button></div>`;icons();playL($('#lotH'),'grape');return}
+ const cols=reg.fields.filter(f=>f.type!=='area').slice(0,9);
+ const st=r=>r.void?'<span class="tag">Anulado</span>':r.sync==='ok'?'<span class="tag ok">Sincronizado</span>':r.sync==='sent'?'<span class="tag ok" title="Enviado sin confirmación del servidor">Enviado</span>':r.sync==='err'?'<span class="tag bad">Error</span>':'<span class="tag warn">Pendiente</span>';
+ $('#hBody').innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Estado</th>${cols.map(f=>`<th>${esc(f.label)}</th>`).join('')}<th>Alertas</th><th>Registró</th><th>v.</th><th></th></tr></thead><tbody>${list.map(r=>`<tr style="${r.void?'opacity:.5;text-decoration:line-through':''}"><td>${st(r)}</td>${cols.map(f=>{const v=r.values[f.key];return`<td>${esc(f.type==='calc'?fmtCalc(f,v??''):f.type==='date'?fmtD(v):v??'')}</td>`}).join('')}<td>${r.alerts?.length?`<span class="tag ${r.alerts.some(a=>a.lvl==='bad')?'bad':'warn'}">${r.alerts.length}</span>`:''}</td><td>${esc(r.meta.user||'')}<br><small style="color:var(--muted)">${new Date(r.meta.created).toLocaleString('es-PE',{dateStyle:'short',timeStyle:'short'})} · ${esc((r.meta.origin||[]).join(', '))}</small></td><td>${r.version}</td><td><div class="acts"><button data-view="${r.id}" title="Ver"><i data-lucide="eye"></i></button>${r.void?'':`<button data-edit="${r.id}" title="Corregir"><i data-lucide="pencil"></i></button><button data-dup="${r.id}" title="Duplicar"><i data-lucide="copy"></i></button><button data-void="${r.id}" title="Anular"><i data-lucide="ban"></i></button>`}</div></td></tr>`).join('')}</tbody></table></div><p class="sub" style="margin-top:8px">${list.length} registro(s). Las correcciones crean una nueva versión con motivo; los registros no se borran, se anulan.</p>`;icons()}
+['change','input'].forEach(ev=>{$('#hReg').addEventListener(ev,renderHist);$('#hMonth').addEventListener(ev,renderHist);$('#hq').addEventListener(ev,renderHist)});
+$('#hBody').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.view||b.dataset.edit||b.dataset.dup||b.dataset.void;const r=RECS.find(x=>x.id===id);if(!r)return;const reg=byCode(r.code);
+ if(b.dataset.view)modal(`<h2><i data-lucide="${reg.icon}"></i>${reg.code} · ${esc(reg.name)}</h2><div class="list">${reg.fields.map(f=>{const v=r.values[f.key];const c=checkField(f,v);return`<div class="li" style="justify-content:space-between"><span style="color:var(--muted)">${esc(f.label)}</span><b style="text-align:right;${c?`color:var(--${c.lvl})`:''}">${esc(f.type==='calc'?fmtCalc(f,v??''):f.type==='date'?fmtD(v):v??'')||'—'}</b></div>`}).join('')}</div>
+  ${r.photos?.length?`<div class="thumbs">${r.photos.map(p=>`<div class="thumb"><img src="${p}"></div>`).join('')}</div>`:''}${r.signature?`<p class="sub" style="margin:12px 0 4px">Firma</p><img src="${r.signature}" style="max-width:100%;height:90px;border:1px solid var(--line);border-radius:10px;background:#fff">`:''}
+  <p class="sub" style="margin-top:12px">ID ${r.id} · versión ${r.version} · ${esc(r.meta.user||'')} (${esc(r.meta.role||'')}) · origen: ${esc((r.meta.origin||[]).join(', '))}${r.meta.geo?' · GPS '+esc(r.meta.geo):''}</p>
+  ${r.history?.length?`<details><summary class="sub" style="cursor:pointer">Historial de correcciones (${r.history.length})</summary><div class="list">${r.history.map(h=>`<div class="li">${new Date(h.at).toLocaleString('es-PE')} · ${esc(h.user)} — ${esc(h.motivo)}</div>`).join('')}</div></details>`:''}<div class="mfoot"><button class="btn pri" onclick="closeModal()">Cerrar</button></div>`);
+ if(b.dataset.edit)openForm(r.code,null,r);
+ if(b.dataset.dup){const p=Object.assign({},r.values);delete p.fecha;delete p.hora;openForm(r.code,p)}
+ if(b.dataset.void){const why=prompt('Motivo de la anulación (queda registrado):');if(!why)return;r.void=true;r.history=[...(r.history||[]),{at:new Date().toISOString(),user:S.user,motivo:'ANULADO: '+why,prev:r.values}];r.motivo='ANULADO: '+why;r.values=Object.assign({},r.values,{obs:('[ANULADO] '+why+' '+(r.values.obs||'')).trim()});r.version++;r.sync='pend';await DB.put(r);toast('Registro anulado.','info');renderHist();S.auto&&syncAll(true)}});
+
+async function exportX(){try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js')}catch(e){return toast('No se pudo cargar el exportador (necesita internet). Use CSV.','bad')}
+ const wb=XLSX.utils.book_new();let n=0;REGS.forEach(reg=>{const rs=RECS.filter(r=>r.code===reg.code);if(!rs.length)return;n++;
+  const aoa=[[...reg.fields.map(f=>f.label),'ID registro','Versión','Registrado por','Fecha-hora de registro','Origen','Alertas','Estado']];
+  rs.forEach(r=>aoa.push([...reg.fields.map(f=>{const v=r.values[f.key];return f.type==='date'?fmtD(v):(v??'')}),r.id,r.version,r.meta.user,new Date(r.meta.created).toLocaleString('es-PE'),(r.meta.origin||[]).join(', '),(r.alerts||[]).map(a=>a.txt).join(' | '),r.void?'Anulado':'Vigente']));
+  const ws=XLSX.utils.aoa_to_sheet(aoa);ws['!cols']=aoa[0].map(h=>({wch:Math.min(30,Math.max(10,String(h).length))}));XLSX.utils.book_append_sheet(wb,ws,reg.sheet.slice(0,31))});
+ if(!n)return toast('No hay registros para exportar.','info');XLSX.writeFile(wb,`Registros_packing_uva_${todayISO()}.xlsx`);toast('Excel descargado.','ok')}
+function exportC(){const reg=byCode($('#hReg').value);const rs=RECS.filter(r=>r.code===reg.code);if(!rs.length)return toast('No hay registros de este tipo.','info');
+ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';const rows=[[...reg.fields.map(f=>f.label),'ID','Versión','Registrado por','Fecha-hora'].map(q).join(';'),...rs.map(r=>[...reg.fields.map(f=>f.type==='date'?fmtD(r.values[f.key]):r.values[f.key]),r.id,r.version,r.meta.user,r.meta.created].map(q).join(';'))];
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.join('\n')],{type:'text/csv'}));a.download=`${reg.sheet}.csv`;a.click()}
+$('#expX').onclick=exportX;$('#expC').onclick=exportC;
+
+/* ======================= ajustes ======================= */
+function renderSet(){$('#sRole').innerHTML=ROLES.map(r=>`<option ${r===S.role?'selected':''}>${r}</option>`).join('');
+ $('#sUser').value=S.user;$('#sComp').value=S.comp;$('#sUrl').value=S.url;$('#sAuto').checked=S.auto;$('#sVib').checked=S.vib;$('#sSpeak').checked=S.speak;$('#sGeo').checked=S.geo;$('#sLang').value=S.lang}
+function saveSet(){Object.assign(S,{user:$('#sUser').value.trim(),role:$('#sRole').value,comp:$('#sComp').value.trim(),url:$('#sUrl').value.trim(),auto:$('#sAuto').checked,vib:$('#sVib').checked,speak:$('#sSpeak').checked,geo:$('#sGeo').checked,lang:$('#sLang').value});store.set('set',S);setAvatar();updChip()}
+$('#sSave').onclick=()=>{saveSet();toast('Ajustes guardados.','ok')};
+['#sAuto','#sVib','#sSpeak','#sGeo','#sLang','#sRole'].forEach(s=>$(s).addEventListener('change',saveSet));
+$('#sTest').onclick=async()=>{saveSet();if(!S.url)return toast('Pegue primero la URL /exec.','warn');const b=$('#sTest');b.disabled=true;b.innerHTML='<i data-lucide="loader"></i>Probando…';icons();
+ try{const r=await fetch(S.url+(S.url.includes('?')?'&':'?')+'action=ping');const j=await r.json();if(!j.ok)throw 0;toast(`Conectado a «${esc(j.libro||'Google Sheets')}».`,'ok');syncAll(true)}
+ catch(e){toast('No se pudo verificar la conexión. Revise que la implementación sea «Cualquier persona» y que la URL termine en /exec.','bad',6000)}b.disabled=false;b.innerHTML='<i data-lucide="plug-zap"></i>Probar conexión';icons()};
+$('#bk').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({version:1,date:new Date().toISOString(),records:RECS})],{type:'application/json'}));a.download=`respaldo_packing_uva_${todayISO()}.json`;a.click()};
+$('#rs').onclick=()=>$('#rsIn').click();
+$('#rsIn').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());let n=0;for(const r of j.records||[]){if(!RECS.find(x=>x.id===r.id)){await DB.put(r);RECS.push(r);n++}}toast(`${n} registro(s) restaurados.`,'ok');updChip()}catch(x){toast('Archivo no válido.','bad')}e.target.value=''};
+$('#wipe').onclick=async()=>{const p=RECS.filter(r=>r.sync!=='ok'&&r.sync!=='sent').length;if(!confirm(`Se borrarán ${RECS.length} registros de ESTE dispositivo${p?` (${p} aún NO enviados a Google Sheets)`:''}. ¿Continuar?`))return;await DB.clear();RECS=[];updChip();toast('Datos locales borrados.','info')};
+
+$('#avatar').onclick=()=>go('set');
+
+function onboarding(){modal(`<div style="display:flex;flex-direction:column;align-items:center;text-align:center"><div class="lot" id="obLot" style="width:130px;height:130px"></div><h2 style="justify-content:center">Bienvenido a Registros Packing Uva</h2><p class="sub">Registros de BPM, HACCP y GlobalG.A.P. desde la recepción hasta el embarque. Llénelos escribiendo, con la voz o con una foto. Funciona sin señal.</p></div>
+ <label class="fld"><span>Su nombre completo</span><input id="obN" placeholder="Ej.: María García" autofocus></label>
+ <label class="fld"><span>Cargo</span><select id="obR">${ROLES.map(r=>`<option>${r}</option>`).join('')}</select></label>
+ <div class="mfoot"><button class="btn pri" id="obGo">Empezar<i data-lucide="arrow-right"></i></button></div>`,m=>{playL($('#obLot'),'grape');
+ m.querySelector('#obGo').onclick=()=>{const n=$('#obN').value.trim();if(!n){$('#obN').classList.add('shake');return $('#obN').focus()}S.user=n;S.role=$('#obR').value;store.set('set',S);setAvatar();closeModal();renderHome();toast(`Hola, ${esc(n.split(' ')[0])}. Configure la conexión con Google Sheets en Ajustes.`,'info',5000)}})}
+
+
+/* ======================= etapas del proceso (colores claros) ======================= */
+const STG={
+ 'Recepción':{n:1,c:'#2FA66A',b:'#E7F6EE',i:'truck'},
+ 'Fumigación':{n:2,c:'#8B6CD9',b:'#F1ECFC',i:'wind'},
+ 'Espera':{n:3,c:'#1E9EB5',b:'#E2F5F8',i:'thermometer',t:'Cámara de espera'},
+ 'Embalaje':{n:4,c:'#E0882B',b:'#FDF1E3',i:'package-check'},
+ 'Paletizado':{n:5,c:'#C59A12',b:'#FBF4DA',i:'layers'},
+ 'Prefrío':{n:6,c:'#3B82D6',b:'#E7F0FC',i:'snowflake'},
+ 'Almacenamiento':{n:7,c:'#5468D4',b:'#ECEEFC',i:'warehouse'},
+ 'Embarque':{n:8,c:'#B05CC9',b:'#F6EAFA',i:'ship'},
+ 'Transversal':{c:'#64748B',b:'#EEF2F6',i:'git-branch',t:'Trazabilidad y control'},
+ 'Soporte':{c:'#D65A78',b:'#FCEBEF',i:'shield-check',t:'Soporte y BPM'}};
+const STAGE_ORDER=Object.keys(STG);
+const sc=reg=>STG[reg.stage]||STG.Transversal;
+const ic=(name,st,size=22)=>`<i data-lucide="${name}" style="width:${size}px;height:${size}px;color:${st.c}"></i>`;
+
+/* ======================= interfaz general ======================= */
+function toast(msg,type='ok',ms=3800){const t=document.createElement('div');t.className='toast '+type;
+ t.innerHTML=`<i data-lucide="${{ok:'circle-check',warn:'triangle-alert',bad:'octagon-alert',info:'info'}[type]}"></i><div>${msg}</div>`;$('#toasts').appendChild(t);icons();
+ setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300)},ms)}
+function say(txt){if(!S.speak||!window.speechSynthesis)return;try{const u=new SpeechSynthesisUtterance(txt);u.lang=S.lang;speechSynthesis.speak(u)}catch(e){}}
+function modal(html,onMount){$('#modal').style.maxWidth='';$('#modal').innerHTML=html;$('#scrim').classList.add('on');icons();onMount&&onMount($('#modal'))}
+function closeModal(){$('#scrim').classList.remove('on');$$('#modal .lot').forEach(e=>{try{LIVE.get(e)?.destroy()}catch(x){}});stopScan()}
+$('#scrim').addEventListener('click',e=>{if(e.target.id==='scrim')closeModal()});
+document.addEventListener('click',e=>{const b=e.target.closest('.btn');if(b){const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height),sp=document.createElement('span');sp.className='rip';sp.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;b.appendChild(sp);setTimeout(()=>sp.remove(),600)}});
+
+let VIEW='home';
+function go(v,skip){const run=()=>{VIEW=v;$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+ $$('.nav [data-go],.bnav [data-go]').forEach(b=>b.classList.toggle('on',b.dataset.go===v||(v==='form'&&b.dataset.go==='regs')));
+ if(v==='home')renderHome();if(v==='regs')renderRegs();if(v==='hist')renderHist();if(v==='set')renderSet();window.scrollTo({top:0,behavior:'instant'});icons()};
+ if(document.startViewTransition&&!skip)document.startViewTransition(run);else run()}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){if(VIEW==='form'&&g.dataset.go!=='form'&&dirty()&&!confirm('Hay datos sin guardar. ¿Salir del registro?'))return;stopVoice();go(g.dataset.go)}});
+function setAvatar(){const ini=(S.user||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()||'?';$('#avatar').textContent=ini;$('#avatarM').textContent=ini;$('#uName').textContent=S.user||'Configurar usuario';$('#uRole').textContent=S.role||''}
+function applyTheme(){}
+
+/* ======================= inicio ======================= */
+const recDate=r=>r.values.fecha||r.values.femb||r.meta.created.slice(0,10);
+function monthRecs(code){const m=todayISO().slice(0,7);return RECS.filter(r=>r.code===code&&!r.void&&(recDate(r)||'').startsWith(m))}
+const todayCount=code=>RECS.filter(r=>r.code===code&&!r.void&&recDate(r)===todayISO()).length;
+function countUp(el,to,dec=0){const t0=performance.now(),d=900;const f=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);el.textContent=(to*e).toLocaleString('es-PE',{minimumFractionDigits:dec,maximumFractionDigits:dec});if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+function renderHome(){
+ const h=new Date().getHours();$('#hello').textContent=(h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches')+(S.user?', '+S.user.split(' ')[0]:'');
+ const d=new Date().toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ $('#today').textContent=d.charAt(0).toUpperCase()+d.slice(1)+(S.comp?' · '+S.comp:'')+' · resumen del mes';
+ const sumK=(c,k)=>monthRecs(c).reduce((s,r)=>s+(num(r.values[k])||0),0);
+ const kgr=sumK('R-13','kgr'),kge=sumK('R-13','kge');
+ const K=[['truck','Kg netos recibidos',sumK('R-01','pn'),0,'kg',STG['Recepción']],['package-check','Cajas embaladas',sumK('R-07','cajas'),0,'',STG.Embalaje],
+  ['ship','Contenedores despachados',monthRecs('R-11').length,0,'',STG.Embarque],['percent','Rendimiento exportable',kgr?kge/kgr*100:0,1,'%',STG['Prefrío']]];
+ $('#kpis').innerHTML=K.map((k,i)=>`<div class="kpi" style="animation-delay:${i*.05}s"><div class="ic" style="background:${k[5].b}">${ic(k[0],k[5])}</div><div><div class="lab">${k[1]}</div><div class="val"><span data-cu="${k[2]}" data-dec="${k[3]}">0</span><span class="unit">${k[4]}</span></div></div></div>`).join('');
+ $$('#kpis [data-cu]').forEach(e=>countUp(e,Number(e.dataset.cu),Number(e.dataset.dec)));
+ const nc=RECS.filter(r=>r.code==='R-21'&&!r.void&&r.values.estado==='Abierta').length,pend=RECS.filter(r=>r.sync!=='ok'&&r.sync!=='sent').length;
+ const M=[['layers','Pallets armados',monthRecs('R-07').length,STG.Paletizado,'R-07'],['triangle-alert','No conformidades abiertas',nc,{c:'#D94848',b:'#FDEDED'},'R-21'],['cloud-upload','Por sincronizar',pend,STG.Fumigación,''],['clipboard-check','Registros hoy',RECS.filter(r=>!r.void&&recDate(r)===todayISO()).length,STG.Transversal,'']];
+ $('#minis').innerHTML=M.map(m=>`<button class="mini" ${m[4]?`data-hist="${m[4]}"`:m[0]==='cloud-upload'?'data-sync="1"':'data-go="hist"'}><span class="mi" style="background:${m[3].b}">${ic(m[0],m[3],15)}</span>${m[1]} <b>${m[2]}</b></button>`).join('');
+ const procStages=STAGE_ORDER.filter(s=>STG[s].n);
+ $('#proc').innerHTML=procStages.map(s=>{const st=STG[s],regs=REGS.filter(r=>r.stage===s),n=regs.reduce((a,r)=>a+todayCount(r.code),0);
+  return`<button class="pstep ${n?'done':''}" data-stagego="${s}" title="${regs.map(r=>r.code+' '+r.name).join(' · ')}"><span class="node" style="background:${st.b}">${ic(st.i,st,24)}<span class="num">${n?'✓':st.n}</span></span><span class="nm">${esc(st.t||s)}</span><span class="ct">${n} hoy</span></button>`}).join('');
+ const pd=REGS.filter(r=>r.daily&&!todayCount(r.code));
+ $('#pending').innerHTML=pd.length?pd.map(r=>{const st=sc(r);return`<div class="li click" data-open="${r.code}"><span class="lic" style="background:${st.b}">${ic(r.icon,st,18)}</span><div class="grow"><b>${esc(r.name)}</b><br><small>${r.code} · ${esc(r.freq)}</small></div><i data-lucide="chevron-right" style="color:var(--muted)"></i></div>`}).join('')
+  :`<div class="empty"><div class="lot" id="lotDone"></div>Todos los registros diarios están hechos.</div>`;
+ const al=RECS.filter(r=>!r.void&&r.alerts&&r.alerts.length).sort((a,b)=>b.meta.created.localeCompare(a.meta.created)).slice(0,5);
+ $('#alerts').innerHTML=al.length?al.map(r=>{const bad=r.alerts.some(a=>a.lvl==='bad');return`<div class="li"><span class="lic" style="background:${bad?'var(--badbg)':'var(--warnbg)'}"><i data-lucide="${bad?'octagon-alert':'triangle-alert'}" style="color:${bad?'var(--bad)':'var(--warn)'}"></i></span><div class="grow"><b>${r.code}</b> · ${esc(r.alerts[0].txt)}<br><small>${fmtD(recDate(r))} · ${esc(r.meta.user||'')}${r.alerts.length>1?' · +'+(r.alerts.length-1)+' más':''}</small></div></div>`}).join('')
+  :`<div class="empty"><div class="lot" id="lotEmpty"></div>Sin alertas registradas.</div>`;
+ const days=[...Array(14)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-13+i);const iso=x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());return{iso,lab:pad(x.getDate()),v:RECS.filter(r=>r.code==='R-01'&&!r.void&&r.values.fecha===iso).reduce((s,r)=>s+(num(r.values.pn)||0),0)}});
+ const mx=Math.max(1,...days.map(x=>x.v));
+ $('#bars').innerHTML=days.map((x,i)=>`<div class="bar" title="${fmtD(x.iso)}: ${fmtN(x.v,0)} kg"><em>${x.v?fmtN(x.v/1000,1)+' t':''}</em><i class="${x.v?'':'zero'}" style="height:${x.v?Math.max(4,x.v/mx*100):3}%;animation-delay:${i*.03}s"></i><small>${x.lab}</small></div>`).join('');
+ icons();playL($('#lotDone'),'check',false,'#2FA66A');playL($('#lotEmpty'),'grape')}
+document.addEventListener('click',e=>{const o=e.target.closest('[data-open]');if(o){openForm(o.dataset.open);return}
+ const s=e.target.closest('[data-stagego]');if(s){const regs=REGS.filter(r=>r.stage===s.dataset.stagego);if(regs.length===1)openForm(regs[0].code);else{STAGE=s.dataset.stagego;go('regs')}return}
+ const h=e.target.closest('[data-hist]');if(h){go('hist',true);$('#hReg').value=h.dataset.hist;renderHist();return}
+ if(e.target.closest('[data-sync]'))syncAll(false)});
+
+/* ======================= lista de registros por etapa ======================= */
+let STAGE='Todos';
+function renderRegs(){
+ $('#stageF').innerHTML=['Todos',...STAGE_ORDER].map(s=>`<button class="fchip ${s===STAGE?'on':''}" data-stage="${s}">${s!=='Todos'?`<i class="d" style="background:${STG[s].c}"></i>`:''}${s==='Todos'?'Todos':esc(STG[s].t||s)}</button>`).join('');
+ const q=norm($('#q').value);let html='',k=0;
+ STAGE_ORDER.forEach(s=>{if(STAGE!=='Todos'&&STAGE!==s)return;const st=STG[s];
+  const list=REGS.filter(r=>r.stage===s&&(!q||norm(r.code+' '+r.name+' '+s+' '+r.obj).includes(q)));if(!list.length)return;
+  html+=`<div class="sec" style="animation-delay:${k++*.05}s"><div class="sec-h"><span class="sn" style="background:${st.b};color:${st.c}">${st.n||ic(st.i,st,16)}</span><h2>${esc(st.t||s)}</h2><span class="sub">· ${list.length} registro${list.length>1?'s':''}</span></div><div class="rgrid">${list.map(r=>{const d=todayCount(r.code),m=monthRecs(r.code).length;
+   return`<button class="reg" data-open="${r.code}" title="${esc(r.obj)}"><span class="ric" style="background:${st.b}">${ic(r.icon,st,24)}</span><span class="grow"><span class="code">${r.code}</span><h3>${esc(r.name)}</h3><span class="meta"><span>${esc(r.freq)}</span>${d?`<span class="tag ok">${d} hoy</span>`:''}${m?`<span class="tag">${m} en el mes</span>`:''}</span></span><i data-lucide="chevron-right" class="go"></i></button>`}).join('')}</div></div>`});
+ $('#regList').innerHTML=html||`<div class="card empty" style="margin-top:20px"><div class="lot" id="lotQ"></div>No hay registros que coincidan con «${esc($('#q').value)}».</div>`;
+ icons();playL($('#lotQ'),'grape')}
+$('#q').addEventListener('input',renderRegs);
+$('#stageF').addEventListener('click',e=>{const b=e.target.closest('[data-stage]');if(b){STAGE=b.dataset.stage;renderRegs()}});
+
+/* ======================= formulario guiado por pasos ======================= */
+const GROUPS=[
+ {id:'gen',t:'Datos generales',i:'clipboard-list',h:'Identifique el registro: fecha, lote, origen y códigos.'},
+ {id:'med',t:'Mediciones',i:'gauge',h:'Pesos, temperaturas y conteos. Las casillas verdes se calculan solas.'},
+ {id:'ver',t:'Verificación',i:'list-checks',h:'Marque conforme (C) o no conforme (NC) y el dictamen.'},
+ {id:'cie',t:'Cierre y evidencia',i:'pen-line',h:'Observaciones, responsable, fotos de evidencia y firma.'},
+ {id:'rev',t:'Revisar y guardar',i:'circle-check',h:'Compruebe los datos antes de guardar. Toque una fila para corregirla.'}];
+function groupOf(f){if(f.key==='n')return'gen';if(f.type==='area'||f.def==='user')return'cie';if(f.type==='int'||f.type==='dec'||f.type==='calc')return'med';if(f.type==='sel')return'ver';return'gen'}
+function learned(key){const s=new Set();RECS.slice().reverse().forEach(r=>{const v=r.values[key];if(v&&typeof v==='string')s.add(v)});return[...s].slice(0,25)}
+function fieldHTML(f){
+ const id='f_'+f.key;let inp;
+ switch(f.type){
+  case'date':inp=`<input id="${id}" type="date">`;break;
+  case'time':inp=`<input id="${id}" type="time">`;break;
+  case'int':inp=`<input id="${id}" type="number" inputmode="numeric" step="1" placeholder="0">`;break;
+  case'dec':inp=`<input id="${id}" type="number" inputmode="decimal" step="any" placeholder="0,0">`;break;
+  case'area':inp=`<textarea id="${id}" rows="2" placeholder="Escriba o dicte…"></textarea>`;break;
+  case'calc':inp=`<output id="${id}">—</output>`;break;
+  case'sel':inp=f.opts.length<=4&&f.opts.join('').length<46?`<div class="seg" id="${id}" role="radiogroup">${f.opts.map(o=>`<button type="button" role="radio" data-v="${esc(o)}" class="${f.bad&&f.bad.includes(o)?'badopt':''}">${esc(o)}</button>`).join('')}</div>`
+    :`<select id="${id}"><option value="">— Seleccione —</option>${f.opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`;break;
+  default:{const opts=[...new Set([...(f.dl||[]),...learned(f.key)])];inp=`<input id="${id}" type="text" ${opts.length?`list="dl_${f.key}"`:''} autocapitalize="sentences">${opts.length?`<datalist id="dl_${f.key}">${opts.map(o=>`<option value="${esc(o)}">`).join('')}</datalist>`:''}`}
+ }
+ const tools=f.type==='calc'?'':`${f.scan&&('BarcodeDetector' in window)?`<button type="button" class="mic" data-scanf="${f.key}" title="Escanear código" aria-label="Escanear ${esc(f.label)}"><i data-lucide="scan-barcode"></i></button>`:''}<button type="button" class="mic" data-mic="${f.key}" title="Dictar este campo" aria-label="Dictar ${esc(f.label)}"><i data-lucide="mic"></i></button>`;
+ return`<div class="field ${f.type==='area'?'wide':''}" data-key="${f.key}"><label for="${id}">${esc(f.label)}${f.req?'<b class="req">*</b>':''}${f.type==='calc'?'<span class="src auto">automático</span>':''}<span class="src" id="src_${f.key}" hidden></span></label><div class="ctl">${inp}${tools}</div><div class="hint" id="h_${f.key}"></div></div>`}
+
+function getV(f){const el=$('#f_'+f.key);if(!el)return'';if(f.type==='calc')return el.dataset.v??'';if(el.classList.contains('seg'))return el.querySelector('.on')?.dataset.v||'';
+ if(f.type==='int'||f.type==='dec')return el.value===''?'':Number(el.value);return el.value.trim()}
+function setV(f,v,origin){const el=$('#f_'+f.key);if(!el||f.type==='calc')return;
+ if(el.classList.contains('seg'))el.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.v===v);b.setAttribute('aria-checked',b.dataset.v===v)});else el.value=v??'';
+ if(origin){CUR.origins.add(origin);const s=$('#src_'+f.key);if(s&&origin!=='manual'){s.hidden=false;s.textContent=origin}const fe=el.closest('.field');fe.classList.remove('filled');void fe.offsetWidth;fe.classList.add('filled')}
+ refresh(f.key)}
+function readAll(){const v={};CUR.reg.fields.forEach(f=>{if(f.type!=='calc')v[f.key]=getV(f)});return computeVals(CUR.reg,v)}
+function refresh(changedKey,validateAll){if(!CUR)return{};const v=readAll();let done=0,tot=0;
+ CUR.reg.fields.forEach(f=>{if(f.type==='calc'){const o=$('#f_'+f.key);o.dataset.v=v[f.key];o.textContent=fmtCalc(f,v[f.key])}else{tot++;if(v[f.key]!==''&&v[f.key]!=null)done++}
+  if(f.type==='calc'||f.type==='sel'||f.key===changedKey||validateAll)showCheck(f,v[f.key])});
+ const p=tot?done/tot:0;$('#ringFg').style.strokeDashoffset=150.8*(1-p);$('#ringTx').textContent=Math.round(p*100)+'%';
+ updWiz(v);return v}
+function showCheck(f,val){const fe=$(`.field[data-key="${f.key}"]`);if(!fe)return;const c=checkField(f,val);const was=fe.classList.contains('bad')||fe.classList.contains('warn');
+ fe.classList.toggle('warn',c?.lvl==='warn');fe.classList.toggle('bad',c?.lvl==='bad');$('#h_'+f.key).textContent=c?c.msg:'';
+ if(c&&!was&&CUR.ready){vib([30,40,30]);if(f.type!=='calc')say(c.msg)}}
+function dirty(){if(!CUR||!CUR.ready)return false;const v=readAll();return CUR.reg.fields.some(f=>f.type!=='calc'&&!f.def&&v[f.key]!=='')||CUR.photos.length||CUR.sigDirty}
+function updWiz(v){if(!CUR.groups)return;CUR.groups.forEach((g,i)=>{const b=$(`.wstep[data-step="${i}"]`);if(!b)return;
+ if(g.id==='rev'){b.querySelector('small').textContent='Último paso';return}
+ const fs=g.f.filter(f=>f.type!=='calc');const n=fs.filter(f=>v[f.key]!==''&&v[f.key]!=null).length;const al=g.f.some(f=>checkField(f,v[f.key]));
+ const reqOk=g.f.filter(f=>f.req).every(f=>v[f.key]!==''&&v[f.key]!=null);
+ b.classList.toggle('alert',al&&i!==CUR.step);b.classList.toggle('done',!al&&fs.length>0&&n===fs.length&&reqOk&&i!==CUR.step);
+ b.querySelector('.wn').innerHTML=al&&i!==CUR.step?'<i data-lucide="triangle-alert"></i>':(!al&&fs.length&&n===fs.length&&i!==CUR.step?'<i data-lucide="check"></i>':String(i+1));
+ b.querySelector('small').textContent=g.id==='cie'?`${n}/${fs.length} · ${CUR.photos.length} foto(s)`:`${n} de ${fs.length} campos`});icons()}
+
+function openForm(code,prefill,editRec){stopVoice();const reg=byCode(code);const st=sc(reg);
+ CUR={reg,origins:new Set(['manual']),photos:[],sig:null,sigDirty:false,sigInit:false,edit:editRec||null,ready:false,step:0};
+ CUR.groups=GROUPS.map(g=>Object.assign({},g,{f:reg.fields.filter(f=>groupOf(f)===g.id)})).filter(g=>g.f.length||g.id==='cie'||g.id==='rev');
+ $('#fIc').style.background=st.b;$('#fIc').innerHTML=ic(reg.icon,st,26);
+ $('#fCode').textContent=`${reg.code} · ${st.t||reg.stage} · ${reg.freq}`;$('#fTitle').textContent=reg.name;
+ $('#wiz').innerHTML=CUR.groups.map((g,i)=>`<button class="wstep" data-step="${i}"><span class="wn">${i+1}</span><span class="wt"><b>${g.t}</b><small></small></span></button>`).join('');
+ $('#panels').innerHTML=CUR.groups.map((g,i)=>`<section class="panel" data-panel="${i}"><div class="ptitle"><i data-lucide="${g.i}" style="color:${st.c}"></i><h2>${g.t}</h2></div><p class="phelp">${i===0?esc(reg.obj)+' ':''}${g.h}</p>
+  ${g.f.length?`<div class="fgrid">${g.f.map(fieldHTML).join('')}</div>`:''}
+  ${g.id==='cie'?`<div class="evid"><div class="card"><b>Fotos de evidencia</b><p class="sub" style="margin:4px 0 12px;font-size:13px">Termómetro, etiqueta, contenedor, defecto… Se guardan en Drive.</p><button class="btn" id="addPhoto" type="button"><i data-lucide="image-plus"></i>Agregar foto</button><input type="file" id="photoIn" accept="image/*" capture="environment" multiple hidden><div class="thumbs" id="thumbs"></div></div>
+   <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>Firma del responsable</b><button class="btn" id="sigClear" type="button" style="min-height:34px;padding:6px 10px"><i data-lucide="eraser"></i>Borrar</button></div><p class="sub" style="margin:4px 0 10px;font-size:13px">Firme con el dedo o el mouse.</p><canvas class="sig" id="sig"></canvas><label class="toggle" style="margin-top:12px"><input type="checkbox" id="geoT">Registrar ubicación GPS</label></div></div>`:''}
+  ${g.id==='rev'?'<div id="review"></div>':''}</section>`).join('');
+ bindEvidence();
+ reg.fields.forEach(f=>{if(f.type==='calc')return;let v='';
+  if(editRec)v=editRec.values[f.key]??'';else if(prefill&&prefill[f.key]!=null)v=prefill[f.key];
+  else if(f.def==='today')v=todayISO();else if(f.def==='now')v=nowHM();else if(f.def==='user')v=S.user||'';else if(f.def==='seq')v=RECS.filter(r=>r.code===code).length+1;
+  setV(f,v)});
+ if(editRec){CUR.photos=[...(editRec.photos||[])];drawThumbs()}
+ $('#geoT').checked=!!S.geo;
+ $('#save').innerHTML=editRec?'<i data-lucide="save"></i>Guardar corrección':'<i data-lucide="save"></i>Guardar registro';
+ go('form');requestAnimationFrame(()=>{CUR.ready=true;goStep(0,true);refresh(null,!!editRec)})}
+
+function goStep(i,first){if(!CUR)return;const n=CUR.groups.length;i=Math.max(0,Math.min(n-1,i));const back=i<CUR.step;CUR.step=i;
+ $$('.panel').forEach(p=>{const on=+p.dataset.panel===i;p.classList.toggle('on',on);p.classList.toggle('back',on&&back)});
+ $$('.wstep').forEach(b=>b.classList.toggle('on',+b.dataset.step===i));
+ const g=CUR.groups[i];
+ if(g.id==='cie'&&!CUR.sigInit){CUR.sigInit=true;initSig(CUR.edit?.signature)}
+ if(g.id==='rev')renderReview();
+ const last=i===n-1;$('#prevB').style.display=i?'':'none';$('#nextB').style.display=last?'none':'';$('#save').style.display=last?'':'none';$('#saveNew').style.display=last&&!CUR.edit?'':'none';
+ $('#stepInfo').textContent=`Paso ${i+1} de ${n} · ${g.t}`;
+ $(`.wstep[data-step="${i}"]`)?.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+ if(!first){const top=$('#wiz').getBoundingClientRect().top+scrollY-80;if(scrollY>top)window.scrollTo({top,behavior:'smooth'})}
+ const firstIn=$(`.panel.on input:not([type=date]):not([type=time]),.panel.on textarea`);if(firstIn&&matchMedia('(pointer:fine)').matches&&g.id!=='rev')setTimeout(()=>firstIn.focus({preventScroll:true}),60);
+ refresh(null);icons()}
+$('#wiz').addEventListener('click',e=>{const b=e.target.closest('.wstep');if(b)goStep(+b.dataset.step)});
+$('#prevB').onclick=()=>goStep(CUR.step-1);
+$('#nextB').onclick=()=>{const g=CUR.groups[CUR.step];g.f.forEach(f=>showCheck(f,readAll()[f.key]));goStep(CUR.step+1);vib(8)};
+
+function renderReview(){const v=readAll();const al=recAlerts(CUR.reg,v);const miss=CUR.reg.fields.filter(f=>f.req&&(v[f.key]===''||v[f.key]==null));
+ const head=miss.length?`<div class="review-al warn"><b>Faltan ${miss.length} dato(s) obligatorio(s):</b> ${miss.map(f=>esc(f.label)).join(', ')}.</div>`
+  :al.length?`<div class="review-al warn"><b>${al.length} alerta(s):</b><br>${al.map(a=>esc(a.txt)).join('<br>')}<br><small>Al guardar podrá registrar la acción correctiva.</small></div>`
+  :`<div class="review-al ok"><b>Todo en orden.</b> No hay valores fuera de rango ni datos obligatorios vacíos.</div>`;
+ const blocks=CUR.groups.map((g,i)=>{if(g.id==='rev'||!g.f.length&&g.id!=='cie')return'';
+  const rows=g.f.map(f=>{const val=v[f.key];const c=checkField(f,val);const empty=val===''||val==null;const shown=empty?(f.req?'Falta':'—'):f.type==='calc'?fmtCalc(f,val):f.type==='date'?fmtD(val):String(val);
+   return`<div class="rrow ${empty&&f.req?'miss':''} ${c?(c.lvl==='bad'?'x':'w'):''}" data-gofield="${f.key}" data-gostep="${i}"><span>${esc(f.label)}</span><b>${esc(shown)}</b></div>`}).join('');
+  const extra=g.id==='cie'?`<div class="rrow" data-gostep="${i}"><span>Fotos de evidencia</span><b>${CUR.photos.length}</b></div><div class="rrow" data-gostep="${i}"><span>Firma</span><b>${CUR.sigDirty||CUR.edit?.signature?'Sí':'—'}</b></div>`:'';
+  return`<div class="card"><h3><i data-lucide="${g.i}" style="width:17px;height:17px;color:var(--muted)"></i>${g.t}</h3>${rows}${extra}</div>`}).join('');
+ $('#review').innerHTML=head+`<div class="rv">${blocks}</div>`;icons()}
+$('#panels').addEventListener('click',e=>{const r=e.target.closest('[data-gostep]');if(r){goStep(+r.dataset.gostep);const k=r.dataset.gofield;if(k)setTimeout(()=>{const fe=$(`.field[data-key="${k}"]`);fe?.scrollIntoView({block:'center',behavior:'smooth'});fe?.querySelector('input,select,textarea,button')?.focus({preventScroll:true})},120);return}
+ const b=e.target.closest('.seg button');if(b){const seg=b.parentElement,f=CUR.reg.fields.find(x=>'f_'+x.key===seg.id);const v=b.classList.contains('on')?'':b.dataset.v;setV(f,v,'manual');vib(10)}
+ const m=e.target.closest('[data-mic]');if(m)startVoice('field',m.dataset.mic);
+ const s=e.target.closest('[data-scanf]');if(s)openScan(s.dataset.scanf)});
+$('#panels').addEventListener('input',e=>{const fe=e.target.closest('.field');if(fe){refresh(null);const f=CUR.reg.fields.find(x=>x.key===fe.dataset.key);if(!checkField(f,getV(f))){fe.classList.remove('warn','bad');$('#h_'+f.key).textContent=''}}});
+$('#panels').addEventListener('change',e=>{const fe=e.target.closest('.field');if(fe)refresh(fe.dataset.key)});
+$('#panels').addEventListener('focusout',e=>{const fe=e.target.closest('.field');if(fe)refresh(fe.dataset.key)});
+$('#panels').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();focusNext(e.target)}});
+function focusNext(from,back){const all=$$('.panel.on input:not([type=file]):not([type=checkbox]),.panel.on select,.panel.on textarea,.panel.on .seg button:first-child');const i=all.indexOf(from||document.activeElement);const n=all[i+(back?-1:1)];
+ if(n){n.focus();n.scrollIntoView({block:'center',behavior:'smooth'})}else if(!back&&CUR.step<CUR.groups.length-1)goStep(CUR.step+1);else if(back&&CUR.step>0)goStep(CUR.step-1)}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&VIEW==='form'){e.preventDefault();saveRec(false)}if(e.key==='Escape')closeModal()});
+
+$('#tRepeat').onclick=()=>{const last=RECS.filter(r=>r.code===CUR.reg.code&&!r.void).sort((a,b)=>b.meta.created.localeCompare(a.meta.created))[0];
+ if(!last)return toast('Aún no hay un registro anterior de este tipo.','info');let n=0;
+ CUR.reg.fields.forEach(f=>{if((f.type==='text'||f.type==='sel')&&!f.def&&f.key!=='obs'&&last.values[f.key]!==''&&last.values[f.key]!=null&&getV(f)===''){setV(f,last.values[f.key],'repetido');n++}});
+ toast(`${n} campos copiados del último registro (${fmtD(recDate(last))}).`,'info')};
+$('#tClear').onclick=()=>{if(confirm('¿Limpiar todos los campos del formulario?'))openForm(CUR.reg.code)};
+
+/* ---------- evidencia ---------- */
+function bindEvidence(){
+ $('#addPhoto').onclick=()=>$('#photoIn').click();
+ $('#photoIn').onchange=async e=>{for(const file of e.target.files){if(CUR.photos.length>=6){toast('Máximo 6 fotos por registro.','warn');break}CUR.photos.push(await compress(file,1280,.72))}e.target.value='';drawThumbs()};
+ $('#thumbs').onclick=e=>{const b=e.target.closest('[data-rm]');if(b){CUR.photos.splice(+b.dataset.rm,1);drawThumbs()}};
+ $('#sigClear').onclick=()=>{const c=$('#sig');sigCtx&&sigCtx.clearRect(0,0,c.width,c.height);CUR.sigDirty=false;if(CUR.edit)CUR.edit.signature=null};
+ const c=$('#sig');let draw=false,last=null;const pt=e=>{const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+ c.addEventListener('pointerdown',e=>{draw=true;last=pt(e);c.setPointerCapture(e.pointerId)});
+ c.addEventListener('pointermove',e=>{if(!draw||!sigCtx)return;const p=pt(e);sigCtx.beginPath();sigCtx.moveTo(...last);sigCtx.lineTo(...p);sigCtx.stroke();last=p;CUR.sigDirty=true});
+ ['pointerup','pointercancel'].forEach(t=>c.addEventListener(t,()=>draw=false))}
+function drawThumbs(){const t=$('#thumbs');if(!t)return;t.innerHTML=CUR.photos.map((p,i)=>`<div class="thumb"><img src="${p}" alt="Foto ${i+1}"><button type="button" data-rm="${i}" aria-label="Quitar foto"><i data-lucide="x"></i></button></div>`).join('');icons();refresh(null)}
+function compress(file,max,q){return new Promise(res=>{const img=new Image();img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(img.src);res(c.toDataURL('image/jpeg',q))};img.src=URL.createObjectURL(file)})}
+let sigCtx=null;
+function initSig(existing){const c=$('#sig');const r=c.getBoundingClientRect();const dpr=window.devicePixelRatio||1;c.width=r.width*dpr;c.height=r.height*dpr;sigCtx=c.getContext('2d');sigCtx.scale(dpr,dpr);sigCtx.lineWidth=2.4;sigCtx.lineCap='round';sigCtx.lineJoin='round';sigCtx.strokeStyle='#1F2937';
+ if(existing){const im=new Image();im.onload=()=>sigCtx.drawImage(im,0,0,r.width,r.height);im.src=existing}}
+function sigData(){if(!CUR.sigDirty)return CUR.edit?.signature||null;const c=$('#sig');const o=document.createElement('canvas');o.width=c.width;o.height=c.height;const x=o.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,o.width,o.height);x.drawImage(c,0,0);return o.toDataURL('image/jpeg',.6)}
+const getGeo=()=>new Promise(res=>{if(!$('#geoT')?.checked||!navigator.geolocation)return res('');navigator.geolocation.getCurrentPosition(p=>res(p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)),()=>res(''),{timeout:6000,maximumAge:60000})});
+
+/* ---------- guardar ---------- */
+$('#save').onclick=()=>saveRec(false);$('#saveNew').onclick=()=>saveRec(true);
+async function saveRec(again){const reg=CUR.reg;const v=refresh(null,true);
+ const miss=reg.fields.filter(f=>f.req&&(v[f.key]===''||v[f.key]==null));
+ if(miss.length){const gi=CUR.groups.findIndex(g=>g.f.includes(miss[0]));goStep(gi);
+  setTimeout(()=>{miss.forEach(f=>{const fe=$(`.field[data-key="${f.key}"]`);if(!fe)return;fe.classList.remove('shake');void fe.offsetWidth;fe.classList.add('shake','warn');$('#h_'+f.key).textContent='Campo obligatorio'});$(`.field[data-key="${miss[0].key}"]`)?.scrollIntoView({block:'center',behavior:'smooth'})},120);
+  vib([60,40,60]);return toast(`Complete ${miss.length} campo(s) obligatorio(s): ${miss.map(f=>f.label).join(', ')}.`,'warn')}
+ let motivo='';
+ if(CUR.edit){motivo=prompt('Motivo de la corrección (queda en la auditoría):','');if(!motivo)return toast('La corrección necesita un motivo.','warn')}
+ const alerts=recAlerts(reg,v);const geo=await getGeo();
+ const rec=CUR.edit?Object.assign({},CUR.edit):{id:uid(),code:reg.code,version:0,history:[],meta:{created:new Date().toISOString()}};
+ if(CUR.edit)rec.history=[...(rec.history||[]),{at:new Date().toISOString(),user:S.user,motivo,prev:CUR.edit.values}];
+ rec.values=v;rec.version=(rec.version||0)+1;rec.motivo=motivo;rec.alerts=alerts;rec.photos=CUR.photos;rec.signature=CUR.sigInit?sigData():(CUR.edit?.signature||null);rec.sync='pend';rec.photosSent=false;
+ rec.meta=Object.assign(rec.meta,{user:S.user,role:S.role,origin:[...CUR.origins],device:navigator.userAgent.replace(/^Mozilla\/5.0 /,'').slice(0,90),geo:geo||rec.meta.geo||'',updated:new Date().toISOString()});
+ await DB.put(rec);const i=RECS.findIndex(r=>r.id===rec.id);if(i>=0)RECS[i]=rec;else RECS.push(rec);
+ CUR.ready=false;updChip();
+ const bad=alerts.filter(a=>a.lvl==='bad'),warn=alerts.filter(a=>a.lvl==='warn');
+ await celebrate(alerts.length?'warn':'check',CUR.edit?'Corrección guardada':'Registro guardado',alerts.length?`${alerts.length} alerta(s) registradas`:(S.url?'Se enviará a Google Sheets':'Guardado en este equipo'));
+ vib(alerts.length?[80,50,80]:[25]);
+ if(S.auto)syncAll(true);
+ if(reg.code!=='R-21'&&(bad.length||warn.length)){const items=[...bad,...warn];
+  modal(`<h2><i data-lucide="triangle-alert" style="color:var(--warn)"></i>Se detectaron ${items.length} alerta(s)</h2><div class="list">${items.map(a=>`<div class="li"><span class="tag ${a.lvl}">${a.lvl==='bad'?'NC':'Rango'}</span><div>${esc(a.txt)}</div></div>`).join('')}</div><p class="sub" style="margin-top:12px">¿Desea registrar ahora la acción correctiva (R-21)?</p><div class="mfoot"><button class="btn" id="mLater">Más tarde</button><button class="btn pri" id="mAC"><i data-lucide="clipboard-pen"></i>Registrar acción correctiva</button></div>`,m=>{
+   m.querySelector('#mLater').onclick=()=>{closeModal();again?openForm(reg.code,carry(reg,v)):go('regs')};
+   m.querySelector('#mAC').onclick=()=>{closeModal();openForm('R-21',{orig:`${reg.code} ${reg.name} (${fmtD(v.fecha||todayISO())}${v.lote?' · lote '+v.lote:''}${v.pallet?' · pallet '+v.pallet:''}${v.cont?' · '+v.cont:''})`,desc:items.map(a=>a.txt).join('\n'),estado:'Abierta',resp:S.user})}});return}
+ again?openForm(reg.code,carry(reg,v)):go(CUR.edit?'hist':'regs')}
+function carry(reg,v){const o={};reg.fields.forEach(f=>{if((f.type==='text'||f.type==='sel')&&(f.learn||f.dl))o[f.key]=v[f.key]});return o}
+function celebrate(kind,tx,sub){return new Promise(res=>{$('#sucTx').textContent=tx;$('#sucSub').textContent=sub;$('#success').classList.add('on');playL($('#sucLot'),kind,false,kind==='check'?'#2FA66A':'#E0A030');setTimeout(()=>{$('#success').classList.remove('on');res()},kind==='check'?1250:1500)})}
+
+/* ---------- estado de sincronización ---------- */
+function updChip(){const n=RECS.filter(r=>r.sync!=='ok'&&r.sync!=='sent').length;const on=navigator.onLine;
+ $('#syncCard').classList.toggle('off',!on||!S.url);$('#mSync').classList.toggle('off',!on||!S.url);
+ $('#syncTxt').textContent=SYNCING?'Enviando…':!on?'Sin señal':S.url?'Conectado':'Sin conectar a Sheets';
+ $('#syncSub').textContent=n?`${n} registro(s) por enviar`:(S.url?'Todo sincronizado':'Configure la URL en Ajustes');
+ $('#pendN').textContent=n?n+' por enviar':!on?'Sin señal':S.url?'Al día':'Sin Sheets'}
+$('#mSync').onclick=()=>syncAll(false);
+
+/* ======================= arranque ======================= */
+(async()=>{delete document.documentElement.dataset.theme;setAvatar();await DB.open();RECS=await DB.all();updChip();renderHome();icons();
+ if(!S.user)setTimeout(onboarding,350);if(S.auto)setTimeout(()=>syncAll(true),1500)})();
+</script>
+</body>
+</html>
