@@ -9,7 +9,7 @@ Registros de calidad e inocuidad (BPM, HACCP, GlobalG.A.P.) de una planta de emp
 
 | Archivo | Para qué sirve |
 |---|---|
-| `index.html` | Página de presentación (landing) con escena 3D, funciones, recorrido del proceso y preguntas frecuentes. |
+| `index.html` | Portada: recorrido 3D por la nave de empaque que avanza con el scroll. «Iniciar» abre la app. |
 | `app.html` | App web (la misma que `Registros_packing_uva.html`). Se abre en el celular o la computadora. |
 | `Codigo_AppsScript.gs` | Código para Google Sheets: recibe los registros de la app y los guarda en una pestaña por registro. |
 | `Registros_packing_uva_de_mesa.xlsx` | Formatos físicos para imprimir (R-01 a R-21), uno por hoja, para un mes. |

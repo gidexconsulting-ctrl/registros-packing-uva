@@ -1988,7 +1988,7 @@ function build3D(host){const T=THREE;host.innerHTML='';host.classList.add('h3d')
   R.render(scene,cam)};loop()}
 
 /* ======================= arranque ======================= */
-(async()=>{delete document.documentElement.dataset.theme;setAvatar();await DB.open();RECS=await DB.all();if(!RECS.length&&!store.get('demoOff',false)){try{await loadDemo(true)}catch(e){console.warn(e)}}updChip();updShift();renderHome();icons();
+(async()=>{delete document.documentElement.dataset.theme;setAvatar();await DB.open();RECS=await DB.all();if(!RECS.length&&!store.get('demoOff',false)){try{await loadDemo(true)}catch(e){console.warn(e)}}updChip();updShift();renderHome();icons();if(location.hash==='#regs')go('regs',true);
  if(!S.user)setTimeout(onboarding,350);if(S.auto)setTimeout(()=>syncAll(true),1500)})();
 </script>
 </body>
