@@ -741,6 +741,13 @@ body{background:radial-gradient(900px 520px at 105% -8%,rgba(236,72,153,.10),tra
 @media (max-width:420px){.mtop .brand b{font-size:15px}.mtop #pendN{display:none}.mtop .chip{padding:6px 9px}.mtop .icon-btn{width:36px;height:36px}.mtop .avatar{width:36px;height:36px}}
 @media (max-width:860px){.report table{display:block;overflow-x:auto;white-space:nowrap}.hero .hero-lot{display:block;height:190px;order:-1;margin:-8px -8px 0}.hero-tx h1{font-size:25px}}
 @media (prefers-reduced-motion:reduce){.p3d-in{animation:none}}
+.simbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 12px 10px 10px;border-radius:14px;background:linear-gradient(90deg,#FEF3C7,#FCE7F3 55%,#EDE9FE);border:1px solid #F5D0FE;font-size:13.5px;color:var(--ink2);animation:cardIn .5s var(--ease)}
+.simbar[hidden]{display:none}
+.simbar .sbi{width:32px;height:32px;border-radius:10px;background:var(--g2);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 6px 12px -6px rgba(236,72,153,.7)}
+.simbar .sbi svg{width:17px;height:17px}
+.simbar .sbt{flex:1;min-width:0}
+.simbar .btn{flex:none;background:#fff}
+@media (max-width:600px){.simbar{flex-wrap:wrap}.simbar .btn{width:100%}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -787,6 +794,7 @@ body{background:radial-gradient(900px 520px at 105% -8%,rgba(236,72,153,.10),tra
 </header>
 
 <main>
+<div class="simbar" id="simBar" hidden><span class="sbi"><i data-lucide="sparkles"></i></span><span class="sbt"><b>Datos simulados</b> · <span id="simN">0</span> registros de 15 días para conocer la app. No se envían a Google Sheets.</span><button class="btn sm" data-demo="clear"><i data-lucide="eraser"></i>Quitar y empezar</button></div>
 <!-- INICIO -->
 <section class="view on" id="v-home">
   <section class="hero">
@@ -938,7 +946,7 @@ body{background:radial-gradient(900px 520px at 105% -8%,rgba(236,72,153,.10),tra
         </div>
         <div class="section-t">Datos de demostración</div>
         <p class="sub" style="font-size:13.5px;margin:-4px 0 10px">Dos semanas de registros de ejemplo para probar la app o capacitar al personal. Nunca se envían a Google Sheets.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn soft" data-demo="load"><i data-lucide="sparkles"></i>Cargar datos de ejemplo</button><button class="btn" data-demo="clear"><i data-lucide="eraser"></i>Quitar datos de ejemplo</button></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn soft" data-demo="load"><i data-lucide="sparkles"></i>Cargar datos simulados</button><button class="btn" data-demo="clear"><i data-lucide="eraser"></i>Quitar datos simulados</button></div>
       </div>
     </div>
   </div>
@@ -1668,7 +1676,7 @@ function deltaHTML(k){
  if(!k.p)return`<span class="dl up"><i data-lucide="trending-up"></i>Nuevo<em>vs. período anterior</em></span>`;
  const pc=(k.v-k.p)/k.p*100;return`<span class="dl ${Math.abs(pc)<.5?'eq':pc>0?'up':'dn'}"><i data-lucide="${pc>=0?'trending-up':'trending-down'}"></i>${pc>0?'+':''}${fmtN(pc,0)} %<em>vs. período anterior</em></span>`}
 function dailyState(){const t=todayISO();return DAILY.map(([c,n])=>{const k=RECS.filter(r=>r.code===c&&!r.void&&recDate(r)===t).length;return{reg:byCode(c),n,k}})}
-function updBadges(){const ds=dailyState();const p=ds.filter(d=>d.k<d.n).length;const nc=RECS.filter(r=>r.code==='R-21'&&!r.void&&r.values.estado==='Abierta').length;
+function updBadges(){const sb=$('#simBar');if(sb){const n=RECS.filter(r=>r.demo).length;sb.hidden=!n;$('#simN').textContent=n.toLocaleString('es-PE')}const ds=dailyState();const p=ds.filter(d=>d.k<d.n).length;const nc=RECS.filter(r=>r.code==='R-21'&&!r.void&&r.values.estado==='Abierta').length;
  const b=$('#bRegs');if(b){b.hidden=!p;b.textContent=p;b.title=p+' registros diarios pendientes'}const c=$('#bNC');if(c){c.hidden=!nc;c.textContent=nc;c.title=nc+' no conformidades abiertas'}}
 function updShift(){const el=$('#shift');if(!el)return;const s=shiftNow();el.innerHTML=`<i data-lucide="${s==='día'?'sun':'moon'}"></i>Turno ${s} · ${nowHM()}`;icons()}
 
@@ -1878,18 +1886,18 @@ document.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if((e.ctrlKe
 /* ======================= datos de demostración ======================= */
 DB.bulk=function(list){return new Promise(res=>{if(!this.db){store.set('recs_fb',store.get('recs_fb',[]).concat(list));return res()}const t=this.db.transaction('recs','readwrite'),s=t.objectStore('recs');list.forEach(o=>s.put(o));t.oncomplete=t.onerror=()=>res()})};
 DB.delMany=function(ids){return new Promise(res=>{if(!this.db){store.set('recs_fb',store.get('recs_fb',[]).filter(x=>!ids.includes(x.id)));return res()}const t=this.db.transaction('recs','readwrite'),s=t.objectStore('recs');ids.forEach(i=>s.delete(i));t.oncomplete=t.onerror=()=>res()})};
-async function clearDemo(silent){const d=RECS.filter(r=>r.demo);if(!d.length){if(!silent)toast('No hay datos de ejemplo cargados.','info');return}
- if(!silent&&!confirm(`Se quitarán ${d.length} registros de ejemplo. Sus registros reales no se tocan. ¿Continuar?`))return;
- await DB.delMany(d.map(r=>r.id));RECS=RECS.filter(r=>!r.demo);updChip();if(!silent){toast('Datos de ejemplo quitados.','info');go(VIEW==='form'?'home':VIEW,true)}}
-async function loadDemo(){if(RECS.some(r=>r.demo)){if(!confirm('Ya hay datos de ejemplo. ¿Volver a generarlos?'))return;await clearDemo(true)}
+async function clearDemo(silent){const d=RECS.filter(r=>r.demo);if(!d.length){if(!silent)toast('No hay datos simulados cargados.','info');return}
+ if(!silent&&!confirm(`Se quitarán ${d.length} registros simulados. Sus registros reales no se tocan. ¿Continuar?`))return;
+ await DB.delMany(d.map(r=>r.id));RECS=RECS.filter(r=>!r.demo);if(!silent)store.set('demoOff',true);updChip();if(!silent){toast('Datos simulados quitados. La app queda lista para sus registros reales.','info');go(VIEW==='form'?'home':VIEW,true)}}
+async function loadDemo(auto){if(!auto&&RECS.some(r=>r.demo)){if(!confirm('Ya hay datos simulados. ¿Volver a generarlos?'))return;await clearDemo(true)}store.set('demoOff',false);
  let seed=20261101;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
  const R=(a,b,d=1)=>+(a+rnd()*(b-a)).toFixed(d),I=(a,b)=>Math.floor(a+rnd()*(b-a+1)),pick=a=>a[Math.floor(rnd()*a.length)];
  const PROD=[['Fundo Santa Rosa','4063061891234'],['Agrícola El Pedregal','4063061895678'],['Fundo La Encantada','4063061899012'],['Fundo San José','4063061893456']];
  const VARS=['Sweet Globe','Red Globe','Autumn Crisp','Allison','Crimson Seedless'],CLI=['Walmart USA','Tesco UK','Lidl Alemania','Costco USA','Pagoda China'],DEST=['Filadelfia','Rotterdam','Hamburgo','Los Ángeles','Shanghái'];
  const U=[['María García','Encargado de recepción'],['Luis Paredes','Inspector de calidad'],['Rosa Quispe','Controlador de línea'],['Jorge Ramos','Operador de frío'],['Ana Torres','Supervisor de despacho'],['Carlos Ruiz','Supervisor de BPM']];
  const out=[],now=new Date();const hmA=(hm,min)=>{const m=((hm2m(hm)+min)%1440+1440)%1440;return pad(Math.floor(m/60))+':'+pad(m%60)};
- const mk=(code,iso,hm,vals,u)=>{const reg=byCode(code);const v={};reg.fields.forEach(f=>{if(f.type!=='calc')v[f.key]=vals[f.key]??''});computeVals(reg,v);const dt=new Date(iso+'T'+hm+':00');if(dt>now)return null;
-  const rec={id:uid(),code,values:v,version:1,history:[],motivo:'',alerts:recAlerts(reg,v),photos:[],signature:null,sync:'demo',demo:true,photosSent:true,meta:{user:u[0],role:u[1],origin:[pick(['manual','manual','manual','voz','foto'])],device:'Datos de ejemplo',geo:'',created:dt.toISOString(),updated:dt.toISOString()}};out.push(rec);return rec};
+ const mk=(code,iso,hm,vals,u)=>{const reg=byCode(code);const v={};reg.fields.forEach(f=>{if(f.type!=='calc')v[f.key]=vals[f.key]??''});computeVals(reg,v);const dt=new Date(iso+'T'+hm+':00');const tdy=todayISO();if(dt>now&&iso!==tdy)return null;const cr=dt>now?new Date(now.getTime()-Math.floor(rnd()*50+2)*60000):dt;
+  const rec={id:uid(),code,values:v,version:1,history:[],motivo:'',alerts:recAlerts(reg,v),photos:[],signature:null,sync:'demo',demo:true,photosSent:true,meta:{user:u[0],role:u[1],origin:[pick(['manual','manual','manual','voz','foto'])],device:'Datos de ejemplo',geo:'',created:cr.toISOString(),updated:cr.toISOString()}};out.push(rec);return rec};
  let palN=0,queue=[];const days=daysBack(15);
  days.forEach((iso,di)=>{const dm=iso.slice(8,10)+iso.slice(5,7),ymd=iso.slice(2).replace(/-/g,'');const lots=[];
   for(let k=1,n=I(3,5);k<=n;k++){const p=pick(PROD),va=pick(VARS),lote=`L-${dm}-${k}`,hora=pad(5+k*2)+':'+pad(I(0,59)),jab=I(280,520),tara=+(jab*1.9).toFixed(1),pb=+(tara+jab*R(9.1,10.2,2)).toFixed(1);
@@ -1928,7 +1936,7 @@ async function loadDemo(){if(RECS.some(r=>r.demo)){if(!confirm('Ya hay datos de 
  withAl.forEach((r,i)=>{if(i%3)return;const reg=byCode(r.code),f=recDate(r),old=(now-new Date(f+'T12:00:00'))/864e5>3;n++;
   mk('R-21',f,hmA((d=>pad(d.getHours())+':'+pad(d.getMinutes()))(new Date(r.meta.created)),45),{n,fecha:f,orig:`${reg.code} ${reg.name} (${fmtD(f)} · ${keyOf(r)})`,desc:r.alerts.map(a=>a.txt).join('\n'),causa:pick(['Falla operativa','Demora en el traslado a frío','Falta de capacitación','Equipo descalibrado']),acc:pick(['Se reforzó la capacitación del personal','Se reprocesó y se volvió a verificar','Se ajustó el equipo y se verificó','Se priorizó el ingreso a frío']),resp:pick([U[1][0],U[5][0],U[3][0]]),fcomp:isoOf(new Date(new Date(f+'T12:00:00').getTime()+3*864e5)),fcie:old&&rnd()<.75?isoOf(new Date(new Date(f+'T12:00:00').getTime()+I(1,3)*864e5)):'',verif:old?U[1][0]:'',estado:''},U[1])});
  out.filter(r=>r.code==='R-21').forEach(r=>{r.values.estado=r.values.fcie?'Cerrada':'Abierta'});
- await DB.bulk(out);RECS.push(...out);updChip();toast(`${out.length.toLocaleString('es-PE')} registros de ejemplo cargados (${days.length} días). No se envían a Google Sheets.`,'ok',5000);go(VIEW==='set'?'home':VIEW==='form'?'home':VIEW,true)}
+ await DB.bulk(out);RECS.push(...out);updChip();if(!auto)toast(`${out.length.toLocaleString('es-PE')} registros simulados cargados (${days.length} días). No se envían a Google Sheets.`,'ok',5000);go(VIEW==='set'?'home':VIEW==='form'?'home':VIEW,true)}
 
 setInterval(updShift,30000);
 
@@ -1980,7 +1988,7 @@ function build3D(host){const T=THREE;host.innerHTML='';host.classList.add('h3d')
   R.render(scene,cam)};loop()}
 
 /* ======================= arranque ======================= */
-(async()=>{delete document.documentElement.dataset.theme;setAvatar();await DB.open();RECS=await DB.all();updChip();updShift();renderHome();icons();
+(async()=>{delete document.documentElement.dataset.theme;setAvatar();await DB.open();RECS=await DB.all();if(!RECS.length&&!store.get('demoOff',false)){try{await loadDemo(true)}catch(e){console.warn(e)}}updChip();updShift();renderHome();icons();
  if(!S.user)setTimeout(onboarding,350);if(S.auto)setTimeout(()=>syncAll(true),1500)})();
 </script>
 </body>
