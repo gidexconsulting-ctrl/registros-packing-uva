@@ -28,6 +28,15 @@ Soporte y BPM: R-14 Materiales de empaque · R-15 Limpieza y desinfección · R-
 
 ## Funciones de la app
 
+**Secciones:** Panel · Registros · Trazabilidad · Cumplimiento · Historial · Reporte del día · Ajustes.
+
+- **Panel de control:** indicadores con tendencia (hoy, 7 o 30 días), producción diaria recibida vs. exportable, destino de la fruta (exportable, descarte, merma), cadena de frío con rango objetivo, avance de los registros diarios, alertas y actividad reciente.
+- **Trazabilidad:** escriba un lote, pallet o contenedor y vea su recorrido por las 8 etapas, con todos los registros vinculados.
+- **Cumplimiento:** matriz mensual registro × día (como el formato físico), % de días completos y tablero de no conformidades abiertas y cerradas.
+- **Reporte del día:** resumen de lotes, registros por etapa, cadena de frío, despachos y alertas, listo para imprimir o guardar en PDF con firmas.
+- **Buscador rápido (Ctrl K):** abre cualquier registro, lote, pallet, contenedor o acción.
+- **Datos de ejemplo:** dos semanas de registros para probar o capacitar (Ajustes); nunca se envían a Google Sheets.
+
 - Llenado guiado por pasos: datos generales → mediciones → verificación → cierre → revisión.
 - Llenado **a mano, por dictado de voz o con foto** del formato en papel (OCR), y escáner de códigos.
 - Cálculos automáticos (peso neto, tiempos, % exportable) y alertas de rango; un NC abre la acción correctiva R-21.
