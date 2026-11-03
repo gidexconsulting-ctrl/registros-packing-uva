@@ -45,12 +45,13 @@ Soporte y BPM: R-14 Materiales de empaque · R-15 Limpieza y desinfección · R-
 - Funciona **sin señal**: guarda en el equipo y envía a Google Sheets cuando vuelve la conexión.
 - Trazabilidad de cada dato (ALCOA+): usuario, fecha y hora, origen, firma, versión y motivo de corrección.
 
-## Acceso (usuario, contraseña y código por SMS)
+## Acceso (usuario, contraseña y Google Authenticator)
 
-- **Registrarse:** nombre, cargo, celular, usuario y contraseña. Se guardan **solo en este equipo** (la contraseña, cifrada con PBKDF2).
-- **Ingresar:** usuario y contraseña, y luego un **código de 6 dígitos**. La app crea el código y abre Mensajes con el SMS listo para el número registrado. El usuario pulsa *Enviar*, el mensaje llega a su propio celular y escribe el código. Puede marcar «Recordar este equipo» para que no se lo pida otra vez.
-- **¿Olvidó su contraseña?:** usuario y celular registrado → código por SMS → contraseña nueva.
-- Es un bloqueo local del equipo, sin servidor: protege el uso diario de la app, no reemplaza una autenticación de servidor.
+- **Registrarse:** nombre, cargo, usuario y contraseña. Luego se escanea un **código QR con Google Authenticator** (o Microsoft Authenticator, Authy, etc.). Cada usuario recibe un secreto propio y aleatorio.
+- **Ingresar:** usuario y contraseña, y luego el **código de 6 dígitos** que muestra Authenticator (cambia cada 30 s). «Recordar este equipo» evita pedirlo de nuevo.
+- **¿Olvidó su contraseña?:** usuario + código de Authenticator → contraseña nueva.
+- **Cambió de celular:** Ajustes › Cuenta › Google Authenticator (pide la contraseña y muestra un QR nuevo).
+- Todo se guarda solo en el equipo (contraseña cifrada con PBKDF2). Es un bloqueo local de la app, no una autenticación de servidor.
 
 ## Conectar con Google Sheets
 
