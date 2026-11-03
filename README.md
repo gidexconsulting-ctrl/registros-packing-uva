@@ -45,6 +45,14 @@ Soporte y BPM: R-14 Materiales de empaque · R-15 Limpieza y desinfección · R-
 - Funciona **sin señal**: guarda en el equipo y envía a Google Sheets cuando vuelve la conexión.
 - Trazabilidad de cada dato (ALCOA+): usuario, fecha y hora, origen, firma, versión y motivo de corrección.
 
+## Novedades para el trabajo en planta
+
+- **App instalable** (Android: «Instalar» en Ajustes › Preferencias; iPhone: Compartir › Agregar a pantalla de inicio). Abre al instante y funciona sin señal.
+- **Ahora toca:** el Panel muestra qué registros diarios están atrasados según la hora y su frecuencia.
+- **Dictado guiado:** toque Dictar una vez; la app recorre cada campo, lo llena con la voz y avanza sola. Comandos: siguiente, atrás, pausa, borrar, guardar.
+- **Borrador automático:** si se cierra el formulario, al volver ofrece continuar donde quedó.
+- **Flujo encadenado:** al guardar un registro propone el siguiente del proceso (R-01 → R-02, R-07 → R-08, R-10 → R-11…) con lote, variedad, pallet o contenedor ya llenos.
+
 ## Acceso (usuario, contraseña y Google Authenticator)
 
 - **Registrarse:** nombre, cargo, usuario y contraseña. Luego se escanea un **código QR con Google Authenticator** (o Microsoft Authenticator, Authy, etc.). Cada usuario recibe un secreto propio y aleatorio.
