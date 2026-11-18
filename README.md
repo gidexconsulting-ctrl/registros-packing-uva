@@ -61,6 +61,28 @@ Soporte y BPM: R-14 Materiales de empaque · R-15 Limpieza y desinfección · R-
 - **Cambió de celular:** Ajustes › Cuenta › Google Authenticator (pide la contraseña y muestra un QR nuevo).
 - Todo se guarda solo en el equipo (contraseña cifrada con PBKDF2). Es un bloqueo local de la app, no una autenticación de servidor.
 
+## Cada cargo ve solo lo suyo
+
+La primera cuenta del equipo es la del **responsable** (Jefe de packing o Aseguramiento de calidad). Desde entonces, cada cuenta nueva necesita su **autorización**: usuario del responsable + su código de Authenticator. El responsable cambia cargos y quita usuarios en **Ajustes › Cuenta › Usuarios de este equipo**, y cada cambio queda en un registro.
+
+| Cargo | Registros que ve y llena | Secciones extra |
+|---|---|---|
+| Encargado de recepción | R-01, R-14, R-21 | — |
+| Inspector de calidad | R-02, R-06, R-13, R-20, R-21 | Trazabilidad |
+| Operador de fumigación | R-03, R-21 | — |
+| Operador de frío | R-04, R-08, R-09, R-21 | — |
+| Controlador de línea | R-05, R-13, R-21 | — |
+| Encargado de paletizado | R-07, R-21 | — |
+| Supervisor de despacho | R-10, R-11, R-12, R-21 | Trazabilidad, Reporte del día |
+| Supervisor de BPM | R-14 a R-20, R-21 | Cumplimiento |
+| Almacenero | R-14, R-21 | — |
+| Jefe de packing · Aseguramiento de calidad | Todos | Todas |
+
+- Los cargos operativos no ven los indicadores de toda la planta (kilos, exportable, contenedores) ni lo que registran otras áreas. De las acciones correctivas (R-21) solo ven las de sus propios registros.
+- **Ver como** (Ajustes › Perfil, solo el responsable): muestra la app como la vería otro cargo. Sirve para demostraciones y capacitación, y no cambia el cargo de nadie.
+- Los datos de ejemplo traen un trabajador por cargo, para que cada vista tenga registros.
+- Es un control dentro de la app y en cada equipo. No reemplaza los permisos de un servidor.
+
 ## Conectar con Google Sheets
 
 1. Cree una hoja de cálculo en Google Drive.
