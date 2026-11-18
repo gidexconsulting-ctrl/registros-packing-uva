@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidad · Packing Uva</title>
+<meta name="description" content="Cómo la app Registros Packing Uva trata los datos personales de quienes llenan los registros de calidad e inocuidad.">
+<style>
+:root{--ink:#1F1633;--mut:#5B5470;--line:#E4DEEE;--bg:#F8F6FB;--card:#FFFFFF;--acc:#5B2C6F;--soft:#F3E8FF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#EDE7F6;--mut:#B7AECB;--line:#352B48;--bg:#140F1D;--card:#1D1629;--acc:#C9A2E8;--soft:#2A1F3A}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#5B2C6F,#7C3AED 60%,#C026D3);color:#fff;padding:36px 16px 30px}
+header .in,main{max-width:860px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.2}
+header p{margin:0;opacity:.9}
+main{padding:24px 16px 56px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 20px 14px;margin-bottom:16px}
+h2{font-size:1.15rem;margin:16px 0 8px;color:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:8px 6px}
+th{color:var(--mut);font-weight:600}
+.tw{overflow-x:auto}
+.nota{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.94rem}
+a{color:var(--acc)}
+footer{text-align:center;color:var(--mut);font-size:.85rem;padding:0 16px 32px}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1>Política de privacidad de Packing Uva</h1>
+  <p>App de registros de calidad e inocuidad desarrollada por Gidex consulting · Versión 1.0 · Vigente desde el 18 de noviembre de 2026</p>
+</div></header>
+<main>
+  <p class="nota">Esta política explica qué datos personales trata la app Registros Packing Uva, dónde se guardan y cómo ejercer sus derechos, conforme a la Ley N.° 29733, Ley de Protección de Datos Personales, y su reglamento.</p>
+
+  <section><h2>1. Quién es responsable</h2>
+    <p><b>La empresa</b> que usa la app en su planta de empaque es la responsable de los datos y de su hoja de Google Sheets. <b>Gidex consulting</b> desarrolla la app y <b>no recibe ni guarda</b> los registros ni los datos de los usuarios: la app no tiene un servidor de Gidex.</p>
+  </section>
+
+  <section><h2>2. Qué datos se tratan</h2>
+    <div class="tw"><table>
+      <tr><th>Datos</th><th>Detalle</th></tr>
+      <tr><td>Cuenta de usuario</td><td>Nombre, cargo, usuario, contraseña (guardada cifrada en el equipo) y la clave del autenticador para la verificación en dos pasos.</td></tr>
+      <tr><td>Registros de calidad</td><td>Lo que se llena en cada formato (R-01 a R-21): fechas, horas, lotes, mediciones, observaciones, nombre de quien registra y, si se usan, firma, fotos de evidencia y ubicación GPS.</td></tr>
+      <tr><td>Trazabilidad</td><td>Quién creó o corrigió cada registro, cuándo, desde qué origen (manual, voz o foto) y el motivo de cada corrección.</td></tr>
+    </table></div>
+    <p>La ubicación GPS está desactivada salvo que la empresa la active en Ajustes.</p>
+  </section>
+
+  <section><h2>3. Para qué se usan</h2>
+    <p>Para cumplir los registros de buenas prácticas, HACCP y GlobalG.A.P. de la planta, demostrar la trazabilidad de la fruta desde la recepción hasta el embarque, atender auditorías y controlar que cada cargo vea solo los registros de su área.</p>
+  </section>
+
+  <section><h2>4. Dónde se guardan y con quién se comparten</h2>
+    <div class="tw"><table>
+      <tr><th>Lugar o proveedor</th><th>Para qué</th><th>Dónde</th></tr>
+      <tr><td>El propio celular o computadora</td><td>Guarda los registros, los usuarios y los borradores para trabajar sin señal.</td><td>En el equipo</td></tr>
+      <tr><td>Google Sheets de la empresa (Apps Script)</td><td>Recibe una copia de los registros cuando la empresa conecta su hoja.</td><td>Google: Estados Unidos y otros países</td></tr>
+      <tr><td>GitHub Pages</td><td>Publica la app. No recibe registros.</td><td>Estados Unidos</td></tr>
+      <tr><td>cdnjs, jsDelivr y Google Fonts</td><td>Entregan librerías y tipografías. Pueden registrar la dirección IP.</td><td>Red mundial</td></tr>
+    </table></div>
+    <p>Por usar servicios de Google y de otros proveedores fuera del Perú, puede haber <b>transferencia internacional de datos</b>.</p>
+  </section>
+
+  <section><h2>5. Uso de inteligencia artificial</h2>
+    <ul>
+      <li><b>Llenado con foto (OCR):</b> la lectura del formato en papel se hace en el propio equipo con Tesseract; la foto no se envía a ningún servidor para leerla.</li>
+      <li><b>Dictado por voz:</b> en navegadores como Chrome, el audio se procesa en los servidores de Google para convertirlo en texto. Es opcional: siempre se puede escribir.</li>
+      <li><b>Lectura en voz alta:</b> usa la voz del propio equipo; no envía datos.</li>
+    </ul>
+    <p>La app no toma decisiones automáticas sobre personas. Las alertas de rango solo avisan; las decisiones las toma el personal de la planta.</p>
+  </section>
+
+  <section><h2>6. Cuánto tiempo se guardan</h2>
+    <p>En el equipo, hasta que la empresa los borre desde Ajustes › Datos. En Google Sheets, según la política de conservación de la empresa y los plazos que exijan sus auditorías y normas sanitarias. Los registros no se borran: se anulan con motivo, para conservar la trazabilidad.</p>
+  </section>
+
+  <section><h2>7. Cómo se protegen</h2>
+    <ul>
+      <li>Ingreso con usuario, contraseña cifrada y verificación en dos pasos con un autenticador.</li>
+      <li>Cada cargo ve solo los registros de su área; solo el responsable de la planta autoriza cuentas y cambia cargos, y esos cambios quedan anotados.</li>
+      <li>Conexión cifrada (HTTPS) con Google Sheets.</li>
+    </ul>
+    <p>Estas protecciones funcionan dentro de cada equipo. La empresa debe proteger también sus celulares con bloqueo de pantalla.</p>
+  </section>
+
+  <section><h2>8. Sus derechos y cómo ejercerlos</h2>
+    <p>Usted puede pedir acceder a sus datos, rectificarlos, cancelarlos, oponerse a un uso o revocar su consentimiento, conforme a la Ley N.° 29733. Como los datos están en los equipos y la hoja de la empresa, la solicitud se dirige a <b>la empresa</b> (su jefe de planta o área de aseguramiento de calidad). Si necesita ayuda, escriba a Gidex consulting: <a href="mailto:gidex.consulting@gmail.com">gidex.consulting@gmail.com</a>. Si no está conforme con la respuesta, puede acudir a la Autoridad Nacional de Protección de Datos Personales.</p>
+  </section>
+
+  <section><h2>9. Cambios y contacto</h2>
+    <p>Si esta política cambia, se publicará aquí con su nueva fecha. Consultas: <a href="mailto:gidex.consulting@gmail.com">gidex.consulting@gmail.com</a> · <a href="https://gidexconsulting-ctrl.github.io/gidex-consulting/index.html#inicio">Gidex consulting</a>.</p>
+  </section>
+</main>
+<footer>© 2026 Gidex consulting · Registros Packing Uva</footer>
+</body>
+</html>
