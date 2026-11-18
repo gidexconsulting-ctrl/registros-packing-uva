@@ -1,3 +1,5 @@
 ~$*
 *.tmp
 *.mp4
+node_modules/
+_site/
